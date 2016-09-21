@@ -8,7 +8,7 @@
 <meta name="keyword"
 	content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-<title>师说CMS 后台</title>
+<title>Bottle</title>
 
 <!-- Bootstrap core CSS -->
 <link href="${BASE_PATH}/static/manage/css/bootstrap.min.css"

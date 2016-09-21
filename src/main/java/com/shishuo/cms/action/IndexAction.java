@@ -33,7 +33,7 @@ public class IndexAction extends BaseAction {
 	public String defalut(
 			@RequestParam(value = "p", defaultValue = "1") long p,
 			ModelMap modelMap) {
-		return home(p, modelMap);
+		return "/manage/login";
 	}
 
 	/**
