@@ -103,7 +103,7 @@ public class ManagePlayerAction extends ManageBaseAction {
 			HttpClient client = new HttpClient();
 			PostMethod post = new PostMethod("http://gbk.sms.webchinese.cn"); 
 			post.addRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=gbk");
-			NameValuePair[] data ={ new NameValuePair("Uid", "hohohahi"),new NameValuePair("Key", "444e0eb7e1841e7d062e"),new NameValuePair("smsMob","18975811415"),new NameValuePair("smsText","验证码8888")};
+			NameValuePair[] data ={ new NameValuePair("Uid", "hohohahi"),new NameValuePair("Key", "444e0eb7e1841e7d062e"),new NameValuePair("smsMob","18975811415"),new NameValuePair("smsText","验证码4567")};
 			post.setRequestBody(data);
 
 			client.executeMethod(post);
