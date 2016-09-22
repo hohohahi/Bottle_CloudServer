@@ -20,3 +20,4 @@ unzip /home/yw/Bottle_CloudServer.zip -d $OM_HOME/web
 
 nohup startup.sh
 tail -f $TOMCAT_HOME/logs/catalina.out
+
