@@ -124,7 +124,7 @@ input.error:focus {
 								dataType : 'json',
 								success : function(data) {
 									if (data.result) {
-										location.href = "${BASE_PATH}/manage/article/list.htm";
+										location.href = "${BASE_PATH}/manage/player/list.htm";
 									} else {
 										showErrors($('#adminForm'), data.errors);
 										if (data.msg == "change_captcha") {

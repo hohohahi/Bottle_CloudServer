@@ -1,6 +1,17 @@
-CREATE DATABASE  IF NOT EXISTS `shishuocms` ;
-USE `shishuocms`;
+DROP TABLE IF EXISTS player;
+CREATE TABLE `player` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '文件ID',
+  `name` varchar(500) DEFAULT '0',
+  `status` bigint(20) DEFAULT '0',
+  `phoneNumber` bigint(20) DEFAULT '0' COMMENT '管理员ID',
+  `password` varchar(500) DEFAULT '0',
+  `amount` double unsigned DEFAULT 0.0,  
+  PRIMARY KEY (`id`),
+  KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
+  KEY `idx_name` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Player';
 
+DROP TABLE IF EXISTS admin;
 CREATE TABLE `admin` (
   `adminId` bigint(10) NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
   `name` varchar(50) DEFAULT NULL COMMENT '管理员名称',
@@ -10,31 +21,14 @@ CREATE TABLE `admin` (
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员';
 
+DROP TABLE IF EXISTS admin_folder;
 CREATE TABLE `admin_folder` (
   `adminId` bigint(20) DEFAULT NULL,
   `folderId` bigint(20) DEFAULT NULL,
   `createTime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-CREATE TABLE `article` (
-  `articleId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '文件ID',
-  `folderId` bigint(20) DEFAULT NULL,
-  `path` varchar(200) DEFAULT NULL,
-  `adminId` bigint(20) DEFAULT '0' COMMENT '管理员ID',
-  `picture` varchar(60) DEFAULT NULL,
-  `title` varchar(200) DEFAULT '' COMMENT '文件名称',
-  `summary` varchar(2000) DEFAULT NULL,
-  `content` mediumtext COMMENT '文件内容',
-  `viewCount` int(11) DEFAULT '0' COMMENT '浏览数',
-  `commentCount` int(11) DEFAULT '0' COMMENT '评论数',
-  `status` varchar(20) DEFAULT 'init' COMMENT '状态：0 隐藏 1 显示',
-  `check` enum('yes','no','init') DEFAULT NULL,
-  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
-  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`articleId`),
-  KEY `idx_folder` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='文件';
-
+DROP TABLE IF EXISTS comment;
 CREATE TABLE `comment` (
   `commentId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '评论ID',
   `userId` bigint(20) DEFAULT NULL COMMENT '用户ID',
@@ -53,6 +47,7 @@ CREATE TABLE `comment` (
   KEY `idx_status` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='评论';
 
+DROP TABLE IF EXISTS config;
 CREATE TABLE `config` (
   `key` varchar(45) NOT NULL COMMENT 'Key',
   `value` varchar(45) DEFAULT NULL COMMENT '值',
@@ -61,6 +56,7 @@ CREATE TABLE `config` (
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='网站配置';
 
+DROP TABLE IF EXISTS folder;
 CREATE TABLE `folder` (
   `folderId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '目录ID',
   `fatherId` bigint(20) NOT NULL DEFAULT '0' COMMENT '父亲Id，用于构建目录树',
@@ -82,6 +78,7 @@ CREATE TABLE `folder` (
   KEY `idx_status` (`fatherId`,`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='目录';
 
+DROP TABLE IF EXISTS guestbook;
 CREATE TABLE `guestbook` (
   `guestbookId` bigint(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -96,6 +93,7 @@ CREATE TABLE `guestbook` (
   PRIMARY KEY (`guestbookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+DROP TABLE IF EXISTS headline;
 CREATE TABLE `headline` (
   `headlineId` bigint(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -106,6 +104,7 @@ CREATE TABLE `headline` (
   PRIMARY KEY (`headlineId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+DROP TABLE IF EXISTS media;
 CREATE TABLE `media` (
   `mediaId` bigint(20) NOT NULL AUTO_INCREMENT,
   `kindId` bigint(20) DEFAULT '0',
@@ -119,6 +118,7 @@ CREATE TABLE `media` (
   KEY `idx_kind` (`kind`,`kindId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2 ROW_FORMAT=COMPACT;
 
+DROP TABLE IF EXISTS user;
 CREATE TABLE `user` (
   `userId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `openId` bigint(20) DEFAULT NULL COMMENT '公共用户ID，只有是师说，QQ，微博等其它网站登录时才有。',
@@ -144,7 +144,6 @@ INSERT INTO `admin_folder` VALUES (1,4,'2014-10-29 20:48:44');
 INSERT INTO `admin_folder` VALUES (1,5,'2014-10-29 20:48:45');
 INSERT INTO `admin_folder` VALUES (1,2,'2014-10-29 20:48:46');
 
-INSERT INTO `article` VALUES (1,1,'1',1,'','Hello World','Hello World!!','<p>Hello World!!</p><div id=\"xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd\"></div>',0,0,'display','yes','2014-10-29 00:00:00','2014-10-29 20:49:54');
 
 INSERT INTO `folder` VALUES (1,0,'blog','博客','1','',1,1,0,0,0,'display','no','2014-10-29 18:37:39',NULL);
 INSERT INTO `folder` VALUES (2,0,'about','关于博主','2','<p>朕就是这样一汉子。<br/></p><div id=\"xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd\"></div>',1,1,0,0,0,'display','no','2014-10-29 18:38:02',NULL);

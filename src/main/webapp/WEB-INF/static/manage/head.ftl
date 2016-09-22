@@ -9,7 +9,6 @@
 <meta name="author" content="Mosaddek">
 <meta name="keyword"
 	content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-<link rel="shortcut icon" href="img/favicon.png">
 <title>后台</title>
 <!-- Bootstrap core CSS -->
 <link href="${BASE_PATH}/static/manage/css/bootstrap.min.css?v=${config_v}" rel="stylesheet">
@@ -80,37 +79,22 @@
 		<aside>
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu goes here-->
-				<ul class="sidebar-menu" id="nav-accordion">
-					<#if SESSION_ADMIN.isAdmin>
+				<ul class="sidebar-menu" id="nav-accordion">										
 					<li class="">
-						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>文章列表</span></a>
-					</li>
-					<li class="sub-menu">
-						<a href="${BASE_PATH}/manage/headline/list.htm" <#if menu="headline">class="active"</#if>> <i class="icon-desktop"></i> <span>首页头条</span></a>
-					</li>
-					<li class="">
-						<a <#if menu="folder">class="active"</#if> href="${BASE_PATH}/manage/folder/list.htm"> <i class="icon-folder-open"></i> <span>目录列表</span></a>
-					</li>	
-					<li class="">
-						<a <#if menu="message">class="active"</#if> href="${BASE_PATH}/manage/guestbook/list.htm"> <i class="icon-comments"></i> <span>留言列表</span></a>
+						<a <#if menu="player">class="active"</#if> href="${BASE_PATH}/manage/player/list.htm"> <i class="icon-book"></i> <span>用户管理</span></a>
 					</li>
 					<li class="">
 						<a <#if menu="admin_list">class="active"</#if> href="${BASE_PATH}/manage/admin/manage.htm"> <i class="icon-user"></i> <span>管理员管理</span></a>
 					</li>
 					<li class="">
+						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>回收机管理</span></a>
+					</li>
+					<li class="">
+						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>模版管理</span></a>
+					</li>
+					<li class="">
 						<a <#if menu="update_password">class="active"</#if> href="${BASE_PATH}/manage/admin/update.htm"> <i class="icon-cogs"></i> <span>修改密码</span></a>
-					</li>
-					<#else>
-					<li class="">
-						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>文章列表</span></a>
-					</li>
-					<li class="">
-						<a <#if menu="update_password">class="active"</#if> href="${BASE_PATH}/manage/admin/update.htm"> <i class="icon-home"></i> <span>修改密码</span></a>
-					</li>
-					</#if>
-					<li class="">
-						<a target="_blank" href="http://rj.baidu.com/soft/detail/14744.html"><span>推荐Google浏览器</span></a>
-					</li>
+					</li>					
 				</ul>
 			</div>
 		</aside>

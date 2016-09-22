@@ -21,22 +21,22 @@ import com.shishuo.cms.entity.vo.ArticleVo;
  * 
  */
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/user")
 public class ArticleAction extends BaseAction {
 
-	@RequestMapping(value = "/{articleId}.htm", method = RequestMethod.GET)
-	public String article(@PathVariable long articleId,
+	@RequestMapping(value = "/{userId}.htm", method = RequestMethod.GET)
+	public String article(@PathVariable long userId,
 			@RequestParam(value = "p", defaultValue = "1") long p,
 			ModelMap modelMap) {
 		try {
-			ArticleVo article = fileService.getArticleById(articleId);
+			ArticleVo article = fileService.getArticleById(userId);
 			Folder folder = folderService.getFolderById(article.getFolderId());
 			modelMap.addAttribute("p", p);
 			modelMap.addAttribute("folder", folder);
 			modelMap.addAttribute("article", article);
 			modelMap.addAttribute("g_folderId", folderService.firstFolderId(folder.getFolderId()));
 			return themeService.getArticleTemplate(article.getFolderId(),
-					articleId);
+					userId);
 		} catch (Exception e) {
 			modelMap.addAttribute("g_folderId", 0);
 			return themeService.get404();
