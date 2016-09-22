@@ -7,7 +7,6 @@ export M2=$M2_HOME/bin
 export MAVEN_OPTS="-Xms256m -Xmx512m"
 export PATH=$M2:$PATH
 
-shutdown.sh
 rm $TOMCAT_HOME/logs/*
 rm -r $TOMCAT_HOME/work/*
 pkill -9 java
