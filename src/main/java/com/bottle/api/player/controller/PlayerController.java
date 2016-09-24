@@ -57,6 +57,28 @@ public class PlayerController extends AbstractBaseController implements IControl
     }
 	
 	@ResponseBody
+	@RequestMapping(value="/login", method = RequestMethod.POST)
+	protected RestResultVO login(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			service.login(vo);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
+		
+		return resultVO;
+    }
+	
+	@ResponseBody
 	@RequestMapping(value="/smscode/application", method = RequestMethod.POST)
 	protected RestResultVO applySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);

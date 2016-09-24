@@ -52,6 +52,11 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		final long phoneNumber = vo.getPhoneNumber();
 		final String smsCode = vo.getSmsCode();
 		
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if (null != playerVO) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Already_Existed);			
+		}
+		
 		verifySMSCode(phoneNumber, smsCode);
 		
 		try {
@@ -89,5 +94,26 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		}
 		
 		super.debugLog("applySMSCode: insert phone and code map over");
+	}
+
+	@Override
+	public void login(PlayerVO vo) {
+		final long phoneNumber = vo.getPhoneNumber();
+		if (false == isMobile(phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
+		}
+		
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if (null == playerVO) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Existed);			
+		}
+		
+		final String password_DB = playerVO.getPassword();
+		final String password_Request = vo.getPassword();
+		if (false == password_DB.equals(password_Request)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Wrong_Password);
+		}
+		
+		//add to map
 	}
 }

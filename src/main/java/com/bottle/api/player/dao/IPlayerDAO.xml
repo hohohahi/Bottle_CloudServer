@@ -9,4 +9,9 @@
 		values
 		(#{name},#{status}, #{phoneNumber}, #{password}, #{amount}, #{smsCode})		
 	</insert>
+	
+	<select id="selectOne_ByPhoneNumber" resultType="com.bottle.api.player.vo.PlayerVO">
+		select * from player where
+		phoneNumber=#{phoneNumber} 
+	</select>
 </mapper>
