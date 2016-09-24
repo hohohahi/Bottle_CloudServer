@@ -69,7 +69,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 			resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
 		}
 		else {
-			final String verificationCode = "012345";//smsCodeSender.sendRandomSMSCode(phoneNum);
+			final String verificationCode = smsCodeSender.sendRandomSMSCode(phoneNumber);
 			phoneAndCodeMapDAO.deleteByPhoneNum(phoneNumber);
 			
 			final PhoneAndCodeMapVO mapVO = new PhoneAndCodeMapVO();
