@@ -41,7 +41,8 @@ public interface IWebServiceConstants {
 		_RestService_Exception_PhoneNum_Invalid(2L, "phone number is invalid"),
 		_RestService_Exception_No_SMSCode_Existed_Under_Phone(3L, "There is no smsCode existed, under this phoneNumber"),
 		_RestService_Exception_Wrong_SMSCode(4L, "The wrong SMS code"),
-		_RestService_Exception_DB_ERROR(5L, "Database operation error");
+		_RestService_Exception_DB_ERROR(5L, "Database operation error"),
+		_RestService_Exception_SMSCode_ERROR(6L, "Send SMS code error");
 		
 		private long errorCode = 0L;
 		private String errorMessage = "";

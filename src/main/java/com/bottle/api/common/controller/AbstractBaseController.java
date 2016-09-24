@@ -1,8 +1,8 @@
 package com.bottle.api.common.controller;
 
-import org.springframework.stereotype.Controller;
+import com.bottle.common.AbstractBaseBean;
 
 
-public abstract class AbstractBaseController {
+public abstract class AbstractBaseController extends AbstractBaseBean {
 	
 }

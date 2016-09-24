@@ -19,18 +19,12 @@ import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.common.vo.RestResultVO;
 import com.bottle.api.player.dao.IPhoneAndCodeMapDAO;
 import com.bottle.api.player.service.interfaces.IPlayerService;
-import com.bottle.api.player.service.interfaces.ISMSCodeSender;
-import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
-import com.bottle.api.player.vo.VerificationVO;
 import com.shishuo.cms.dao.AdminDao;
 
 @Controller
 @RequestMapping("/api/player")
 public class PlayerController extends AbstractBaseController implements IController {
-	@Autowired
-	private ISMSCodeSender smsCodeSender;
-	
 	@Autowired
 	private IPhoneAndCodeMapDAO phoneAndCodeMapDAO;
 	
@@ -42,7 +36,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 	
 	@ResponseBody
 	@RequestMapping(value="/registeration", method = RequestMethod.POST)
-	protected RestResultVO subscribe(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
+	protected RestResultVO register(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		try {
@@ -55,6 +49,8 @@ public class PlayerController extends AbstractBaseController implements IControl
 			else {
 				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
 			}
+			
+			super.logErrorAndStack(e, e.getMessage());
 		}
 		
 		return resultVO;
@@ -62,21 +58,23 @@ public class PlayerController extends AbstractBaseController implements IControl
 	
 	@ResponseBody
 	@RequestMapping(value="/smscode/application", method = RequestMethod.POST)
-	protected RestResultVO getVeryficationCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final VerificationVO vo){
+	protected RestResultVO applySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
 		final long phoneNumber = vo.getPhoneNumber();
-		if (false == isMobile(phoneNumber)){
-			resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
-		}
-		else {
-			final String verificationCode = smsCodeSender.sendRandomSMSCode(phoneNumber);
-			phoneAndCodeMapDAO.deleteByPhoneNum(phoneNumber);
+		try {
+			service.applySMSCode(phoneNumber);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
 			
-			final PhoneAndCodeMapVO mapVO = new PhoneAndCodeMapVO();
-			mapVO.setPhoneNumber(phoneNumber);
-			mapVO.setCode(verificationCode);
-			phoneAndCodeMapDAO.insert(mapVO);
-		}				
+			super.logErrorAndStack(e, e.getMessage());
+		}
 		
 		return resultVO;
     }

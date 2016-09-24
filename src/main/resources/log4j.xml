@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"> 
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">  
+  	<appender name="STANDARD_CONSOLE" class="org.apache.log4j.ConsoleAppender">  
+        <param name="encoding" value="GBK"/>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%m%n"/>  
+        </layout>  
+    </appender>  
+    
+  	 <appender name="APILog" class="org.apache.log4j.RollingFileAppender">  
+        <param name="File" value="/jrunlog/api.log" />  
+        <param name="Append" value="true" /> 
+        <param name="MaxFileSize" value="100MB" />
+        <param name="MaxBackupIndex" value="10" />   
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%t %p %d %m %n" />
+        </layout>  
+    </appender>  
+    
+    <category name="com.bottle.api">
+        <priority value="debug"/>
+        <appender-ref ref="APILog"/>
+    </category>    
+</log4j:configuration>  
