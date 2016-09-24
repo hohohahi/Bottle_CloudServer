@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bottle.api.player.dao.IPhoneAndCodeMapDAO">
+	<insert id="insert" parameterType="com.bottle.api.player.vo.PhoneAndCodeMapVO">
+		insert into
+		phoneAndCodeMap
+		(phoneNumber, code)
+		values
+		(#{phoneNumber},#{code})		
+	</insert>
+	
+	<delete id="deleteByPhoneNum" parameterType="long">
+		delete from phoneAndCodeMap where
+		phoneNumber=#{phoneNumber}
+	</delete>
+	
+	<select id="selectCount_ByPhoneNumberAndSMSCode" resultType="int">
+		select count(*) from phoneAndCodeMap where
+		phoneNumber=#{phoneNumber} and code=#{code} 
+	</select>
+	
+	<select id="selectCount_ByPhoneNumber" resultType="int">
+		select count(*) from phoneAndCodeMap where
+		phoneNumber=#{phoneNumber} 
+	</select>
+	
+	<select id="selectOne_ByPhoneNumber" resultType="com.bottle.api.player.vo.PhoneAndCodeMapVO">
+		select * from phoneAndCodeMap where
+		phoneNumber=#{phoneNumber} 
+	</select>
+</mapper>

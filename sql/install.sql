@@ -1,14 +1,25 @@
+DROP TABLE IF EXISTS phoneAndCodeMap;
+CREATE TABLE `phoneAndCodeMap` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',
+  `code` varchar(500) DEFAULT '0',  
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
+  KEY `idx_phoneNumber_And_Code` (`phoneNumber`,`code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='PhoneAndCodeMap';
+
 DROP TABLE IF EXISTS player;
 CREATE TABLE `player` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '文件ID',
-  `name` varchar(500) DEFAULT '0',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(100) DEFAULT '0',
   `status` bigint(20) DEFAULT '0',
-  `phoneNumber` bigint(20) DEFAULT '0' COMMENT '管理员ID',
+  `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',
   `password` varchar(500) DEFAULT '0',
-  `amount` double unsigned DEFAULT 0.0,  
+  `amount` double unsigned DEFAULT 0.0,
+  `smsCode` varchar(500) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
-  KEY `idx_name` (`name`) USING BTREE
+  UNIQUE KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
+  UNIQUE KEY `idx_name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Player';
 
 DROP TABLE IF EXISTS admin;

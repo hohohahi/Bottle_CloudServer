@@ -9,6 +9,6 @@ mvn clean package
 
 mv target/*.war /home/om/Bottle_CloudServer.zip
 rm -rf $OM_HOME
+mkdir $OM_HOME
 mkdir $OM_HOME/web
 unzip /home/om/Bottle_CloudServer.zip -d $OM_HOME/web
-

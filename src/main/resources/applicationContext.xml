@@ -23,8 +23,8 @@
 	         http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<!-- 自动扫描的包名 -->
-	<context:component-scan base-package="com.shishuo.cms"></context:component-scan>
-
+	<context:component-scan base-package="com"></context:component-scan>
+	
 	<mvc:annotation-driven />
 
 	<tx:annotation-driven />
@@ -180,7 +180,7 @@
 	<!--创建数据映射器，数据映射器必须为接口 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
-		<property name="basePackage" value="com.shishuo.cms.dao" />
+		<property name="basePackage" value="com.shishuo.cms.dao;com.bottle.api" />
 	</bean>
 
 </beans>
