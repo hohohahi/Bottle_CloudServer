@@ -24,7 +24,7 @@ public class RedisClient extends AbstractBaseBean implements IRedisClient{
 	private ShardedJedis  jedis;
 	private String ipAddress = "109.205.92.110";
 	private Integer port = 6379;
-	private Integer expireTime = 600;
+	private Integer expireTime = 10;
 	private Integer checkConnectJobSleepTime=1000*60;
 
 	protected void logErrorAndStack(final Throwable e, final String errorMessage){
