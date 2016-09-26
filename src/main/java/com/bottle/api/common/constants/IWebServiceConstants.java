@@ -45,7 +45,8 @@ public interface IWebServiceConstants {
 		_RestService_Exception_SMSCode_ERROR(6L, "Send SMS code error"),
 		_RestService_Exception_Player_Not_Existed(7L, "The player is not existed."),
 		_RestService_Exception_Player_Already_Existed(8L, "The player is already existed"),
-		_RestService_Exception_Wrong_Password(9L, "The password is wrong");
+		_RestService_Exception_Wrong_Password(9L, "The password is wrong"),
+		_RestService_Exception_Player_Already_Login(10L, "The player is already login");
 		
 		private long errorCode = 0L;
 		private String errorMessage = "";

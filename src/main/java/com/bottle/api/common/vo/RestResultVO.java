@@ -6,6 +6,7 @@ public class RestResultVO {
 	private long errorCode = IWebServiceConstants.enumWebServiceErrorCOde._errorCode_OK.getId();
 	private String errorMessage = IWebServiceConstants.enumWebServiceErrorCOde._errorCode_OK.getMessage();
 	private String extraMessage = "";
+	private Object data = new SerializableObject();
 	
 	public RestResultVO(){
 		
@@ -14,6 +15,12 @@ public class RestResultVO {
 	public RestResultVO(IWebServiceConstants.RestServiceExceptionEnum errorEnum){
 		this.errorCode = errorEnum.getErrorCode();
 		this.errorMessage = errorEnum.getErrorMessage();
+	}
+	
+	public void assignExceptionEnum(final IWebServiceConstants.RestServiceExceptionEnum errorEnum){
+		this.errorCode = errorEnum.getErrorCode();
+		this.errorMessage = errorEnum.getErrorMessage();
+		this.extraMessage = errorEnum.getExtraMessage();
 	}
 	
 	public long getErrorCode() {
@@ -37,15 +44,17 @@ public class RestResultVO {
 		this.extraMessage = extraMessage;
 	}
 
-	public void assignExceptionEnum(final IWebServiceConstants.RestServiceExceptionEnum errorEnum){
-		this.errorCode = errorEnum.getErrorCode();
-		this.errorMessage = errorEnum.getErrorMessage();
-		this.extraMessage = errorEnum.getExtraMessage();
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 	@Override
 	public String toString() {
 		return "RestResultVO [errorCode=" + errorCode + ", errorMessage="
-				+ errorMessage + ", extraMessage=" + extraMessage + "]";
+				+ errorMessage + ", extraMessage=" + extraMessage + ", data=" + data+ "]";
 	}
 }

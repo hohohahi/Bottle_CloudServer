@@ -1,6 +1,9 @@
 package com.bottle.api.player.vo;
 
-public class PlayerVO {
+import java.io.Serializable;
+
+public class PlayerVO implements Serializable{
+	private static final long serialVersionUID = 468110010958412844L;
 	long id = 0L;
 	String name = "";
 	long status = 0L;

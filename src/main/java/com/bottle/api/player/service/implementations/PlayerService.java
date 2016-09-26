@@ -14,6 +14,7 @@ import com.bottle.api.player.service.interfaces.ISMSCodeSender;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.common.AbstractBaseBean;
+import com.bottle.common.redisCache.userSession.IPlayerSessionCacheService;
 
 @Service
 public class PlayerService extends AbstractBaseBean implements IPlayerService {
@@ -25,6 +26,9 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	
 	@Autowired
 	private ISMSCodeSender smsCodeSender;
+	
+	@Autowired
+	private IPlayerSessionCacheService sessionService;
 	
 	@Override
 	public void verifySMSCode(long phoneNumber, String smsCode) {
@@ -97,7 +101,7 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	}
 
 	@Override
-	public void login(PlayerVO vo) {
+	public PlayerVO login(PlayerVO vo) {
 		final long phoneNumber = vo.getPhoneNumber();
 		if (false == isMobile(phoneNumber)){
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
@@ -114,6 +118,13 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Wrong_Password);
 		}
 		
+		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
+		if (true == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Already_Login, playerVO_Cache.toString());
+		}
+		
 		//add to map
+		sessionService.setPlayerSession(phoneNumber, playerVO);
+		return playerVO;
 	}
 }

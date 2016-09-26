@@ -62,7 +62,8 @@ public class PlayerController extends AbstractBaseController implements IControl
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		try {
-			service.login(vo);
+			final PlayerVO realVO = service.login(vo);
+			resultVO.setData(realVO);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
 				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
@@ -80,7 +81,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 	
 	@ResponseBody
 	@RequestMapping(value="/smscode/application", method = RequestMethod.POST)
-	protected RestResultVO applySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
+	protected RestResultVO lySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		final long phoneNumber = vo.getPhoneNumber();
