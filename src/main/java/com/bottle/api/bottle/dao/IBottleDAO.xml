@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.bottle.api.bottle.dao.IBottleDAO">
+	<insert id="insert" parameterType="com.bottle.api.bottle.vo.BottleVO">
+		insert into
+		bottle
+		(name, status, location)
+		values
+		(#{name},#{status}, #{location})		
+	</insert>
+	
+	<select id="selectAll" resultType="com.bottle.api.bottle.vo.BottleVO">
+		select * from bottle
+	</select>
+</mapper>

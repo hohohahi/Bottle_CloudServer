@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bottle.api.player.service.interfaces.IPlayerService;
-import com.bottle.api.player.vo.PlayerVO;
 import com.shishuo.cms.action.ArticleAction;
 import com.shishuo.cms.constant.ArticleConstant;
 import com.shishuo.cms.constant.MediaConstant;
@@ -27,9 +25,11 @@ import com.shishuo.cms.entity.Media;
 import com.shishuo.cms.entity.vo.AdminVo;
 import com.shishuo.cms.entity.vo.ArticleVo;
 import com.shishuo.cms.entity.vo.JsonVo;
+import com.shishuo.cms.entity.vo.TemplateVO;
 import com.shishuo.cms.exception.ArticleNotFoundException;
 import com.shishuo.cms.exception.FolderNotFoundException;
 import com.shishuo.cms.exception.UploadException;
+import com.shishuo.cms.service.ITemplateService;
 import com.shishuo.cms.util.SSUtils;
 
 
@@ -38,14 +38,14 @@ import com.shishuo.cms.util.SSUtils;
  * 
  */
 @Controller
-@RequestMapping("/manage/player")
-public class ManagePlayerAction extends ManageBaseAction {
+@RequestMapping("/manage/template")
+public class ManageTemplateAction extends ManageBaseAction {
 
 	@Autowired
 	private ArticleAction articleAction;
 
 	@Autowired
-	private IPlayerService playerService;
+	private ITemplateService templateService;
 	
 	@RequestMapping(value = "/add.htm", method = RequestMethod.GET)
 	public String add(HttpServletRequest request, HttpServletResponse response,
@@ -103,10 +103,10 @@ public class ManagePlayerAction extends ManageBaseAction {
 			@RequestParam(value = "check", required = false) ArticleConstant.check check,
 			HttpServletRequest request, ModelMap modelMap)
 			throws FolderNotFoundException {
-		final List<PlayerVO> playerList = playerService.selectAll();
+		final List<TemplateVO> templateList = templateService.selectAll();
 		
-		modelMap.put("playerList", playerList);		
-		return "manage/player/list";
+		modelMap.put("templateList", templateList);		
+		return "manage/template/list";
 	}
 
 	/**

@@ -87,10 +87,10 @@
 						<a <#if menu="admin_list">class="active"</#if> href="${BASE_PATH}/manage/admin/manage.htm"> <i class="icon-user"></i> <span>管理员管理</span></a>
 					</li>
 					<li class="">
-						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>回收机管理</span></a>
+						<a <#if menu="bottle">class="active"</#if> href="${BASE_PATH}/manage/bottle/list.htm"> <i class="icon-book"></i> <span>回收机管理</span></a>
 					</li>
 					<li class="">
-						<a <#if menu="article">class="active"</#if> href="${BASE_PATH}/manage/article/list.htm"> <i class="icon-book"></i> <span>模版管理</span></a>
+						<a <#if menu="tempalte">class="active"</#if> href="${BASE_PATH}/manage/template/list.htm"> <i class="icon-book"></i> <span>模版管理</span></a>
 					</li>
 					<li class="">
 						<a <#if menu="update_password">class="active"</#if> href="${BASE_PATH}/manage/admin/update.htm"> <i class="icon-cogs"></i> <span>修改密码</span></a>

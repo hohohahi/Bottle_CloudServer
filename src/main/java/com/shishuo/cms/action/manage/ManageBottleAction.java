@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bottle.api.player.service.interfaces.IPlayerService;
-import com.bottle.api.player.vo.PlayerVO;
+import com.bottle.api.bottle.service.interfaces.IBottleService;
+import com.bottle.api.bottle.vo.BottleVO;
 import com.shishuo.cms.action.ArticleAction;
 import com.shishuo.cms.constant.ArticleConstant;
 import com.shishuo.cms.constant.MediaConstant;
@@ -38,14 +38,14 @@ import com.shishuo.cms.util.SSUtils;
  * 
  */
 @Controller
-@RequestMapping("/manage/player")
-public class ManagePlayerAction extends ManageBaseAction {
+@RequestMapping("/manage/bottle")
+public class ManageBottleAction extends ManageBaseAction {
 
 	@Autowired
 	private ArticleAction articleAction;
 
 	@Autowired
-	private IPlayerService playerService;
+	private IBottleService bottleService;
 	
 	@RequestMapping(value = "/add.htm", method = RequestMethod.GET)
 	public String add(HttpServletRequest request, HttpServletResponse response,
@@ -103,10 +103,10 @@ public class ManagePlayerAction extends ManageBaseAction {
 			@RequestParam(value = "check", required = false) ArticleConstant.check check,
 			HttpServletRequest request, ModelMap modelMap)
 			throws FolderNotFoundException {
-		final List<PlayerVO> playerList = playerService.selectAll();
+		final List<BottleVO> bottleList = bottleService.selectAll();
 		
-		modelMap.put("playerList", playerList);		
-		return "manage/player/list";
+		modelMap.put("bottleList", bottleList);		
+		return "manage/bottle/list";
 	}
 
 	/**

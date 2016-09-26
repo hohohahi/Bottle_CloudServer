@@ -1,5 +1,5 @@
-<#assign menu="player">
-<#assign submenu="player_list">
+<#assign menu="template">
+<#assign submenu="template_list">
 <#include "/manage/head.ftl">
 <style type="text/css">
 .pagination {
@@ -45,31 +45,39 @@
                             <table class="table table-striped table-advance table-hover">
                             	<thead>
                                 	<tr>
-										<th>手机号码</th>
 										<th>名称</th>
 										<th>状态</th>
-										<th>余额</th>
-                						<th>短信验证码</th>
+										<th>描述</th>
+                						<th>创建时间</th>
+                						<th>创建者</th>
+                						<th>修改时间</th>
+                						<th>修改者</th>
               						</tr>
                                 </thead>
                             	<tbody role="alert" aria-live="polite" aria-relevant="all">
-                            		<#list playerList as e>
+                            		<#list templateList as e>
                             		<tr class="gradeA odd">
                							<td>
-               								${e.phoneNumber}
+               								${e.name}
                							</td>
                							<td>
-               								${e.name}               								
+               								${e.status}               								
                							</td>
                							<td>
-               								${e.status}
-               							</td>
-               							<td>
-               								${e.amount}
+               								${e.description}
                							</td>
                             			<td>
-                            				${e.smsCode}
-                            			</td>                                    	
+                            				${e.createdDate}
+                            			</td>
+                            			<td>
+                            				${e.createdBy}
+                            			</td>
+                            			<td>
+                            				${e.modifiedDate}
+                            			</td>
+                            			<td>
+                            				${e.modifiedBy}
+                            			</td>                      	
                                 	</tr>
                                 	</#list>
                                	</tbody>

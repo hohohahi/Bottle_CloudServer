@@ -14,4 +14,8 @@
 		select * from player where
 		phoneNumber=#{phoneNumber} 
 	</select>
+	
+	<select id="selectAll" resultType="com.bottle.api.player.vo.PlayerVO">
+		select * from player
+	</select>
 </mapper>

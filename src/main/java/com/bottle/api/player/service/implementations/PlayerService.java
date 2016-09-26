@@ -1,5 +1,7 @@
 package com.bottle.api.player.service.implementations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,5 +128,17 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		//add to map
 		sessionService.setPlayerSession(phoneNumber, playerVO);
 		return playerVO;
+	}
+
+	@Override
+	public List<PlayerVO> selectAll() {
+		List<PlayerVO> playerVOList = new ArrayList<PlayerVO>();
+		try {
+			playerVOList = playerDAO.selectAll();
+		} catch (Exception e) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_DB_ERROR);
+		}
+		
+		return playerVOList;
 	}
 }

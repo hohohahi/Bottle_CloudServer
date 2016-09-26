@@ -1,5 +1,5 @@
-<#assign menu="player">
-<#assign submenu="player_list">
+<#assign menu="bottle">
+<#assign submenu="bottle_list">
 <#include "/manage/head.ftl">
 <style type="text/css">
 .pagination {
@@ -45,30 +45,26 @@
                             <table class="table table-striped table-advance table-hover">
                             	<thead>
                                 	<tr>
-										<th>手机号码</th>
 										<th>名称</th>
 										<th>状态</th>
-										<th>余额</th>
-                						<th>短信验证码</th>
+										<th>地址</th>
+                						<th>查看二维码</th>
               						</tr>
                                 </thead>
                             	<tbody role="alert" aria-live="polite" aria-relevant="all">
-                            		<#list playerList as e>
+                            		<#list bottleList as e>
                             		<tr class="gradeA odd">
                							<td>
-               								${e.phoneNumber}
+               								${e.name}
                							</td>
                							<td>
-               								${e.name}               								
+               								${e.status}               								
                							</td>
                							<td>
-               								${e.status}
-               							</td>
-               							<td>
-               								${e.amount}
+               								${e.location}
                							</td>
                             			<td>
-                            				${e.smsCode}
+                            				to be added
                             			</td>                                    	
                                 	</tr>
                                 	</#list>

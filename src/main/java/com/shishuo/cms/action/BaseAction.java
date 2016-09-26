@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.shishuo.cms.service.ArticleService;
 import com.shishuo.cms.service.FolderService;
 import com.shishuo.cms.service.HeadlineService;
-import com.shishuo.cms.service.TemplateService;
+import com.shishuo.cms.service.OldTemplateService;
 
 /**
  * 
@@ -27,7 +27,7 @@ public class BaseAction {
 	protected ArticleService fileService;
 
 	@Autowired
-	protected TemplateService themeService;
+	protected OldTemplateService themeService;
 
 	@Autowired
 	protected HeadlineService headlineService;
