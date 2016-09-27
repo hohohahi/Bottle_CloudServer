@@ -62,26 +62,34 @@ input.error:focus {
 			action="${BASE_PATH}/app/update" autocomplete="off"
 			method="post">
 			<h2 class="form-signin-heading">
-				<img src="${TEMPLATE_BASE_PATH}/images/logo.png"
+				<img src="${BASE_PATH}/static/images/UI.png"
 					style="height: 38px;" />
 			</h2>
 			<div class="login-wrap">
 				<div class="form-group">
-                                      <label for="exampleInputEmail1">当前状态</label>
-                                      <label id="status">&nbsp&nbsp&nbsp&nbsp未登录</label>
-                                  </div>
- 				<div class="form-group">
-                                      <input type="button" name="startBtn" class="form-control" value="启动投瓶" style="*width: 250px;">
-                                      <br/>
-                                      <input type="button" name="stopBtn" class="form-control" value="停止投瓶" style="*width: 250px;">
-                                  </div>	                                 	
+                	<label for="exampleInputEmail1">回收机运行状态:</label>&nbsp&nbsp&nbsp&nbsp
+                    <label >在线</label>
+               	</div>
+				<div class="form-group">
+                	<label for="exampleInputEmail1">用户登陆状态:</label>&nbsp&nbsp&nbsp&nbsp
+                    <label id="status">未登录</label>
+               	</div>
+               	<div class="form-group" id="amountDiv" style="display:none">
+                	<label for="exampleInputEmail1">余额:</label>&nbsp&nbsp&nbsp&nbsp
+                    <label id="amount">0</label>
+               	</div>
+ 				<div class="form-group" id="controlBtnGroup" style="display:none">
+                    <input type="button" name="startBtn" class="form-control" value="启动投瓶" style="*width: 250px;">
+                    <br/>
+                	<input type="button" name="stopBtn" class="form-control" value="停止投瓶" style="*width: 250px;">                                      
+                </div>	                                 	
 				
 				<div class="clearfix"></div>
 				<div>
 					<p class="error" for="captcha" style="display: none;"></p>
 				</div>
 				<div>
-					<img src="http://localhost:8080/Bottle_CloudServer/static/images/ID.jpg" style="height: 250px;">
+					<img src="${BASE_PATH}/static/images/ID.jpg" style="height: 250px;">
 				</div>
 							
 			</div>
@@ -91,20 +99,23 @@ input.error:focus {
 </body>
 
 <script type="text/javascript">
-		alert(123);
 		var my_interval = setInterval(function () {
-            $('#adminForm')
-					.ajaxForm(
-							{
-								dataType : 'json',
-								success : function(data) {
-									if (data.result) {
-										location.href = "${BASE_PATH}/app/update";
-									} else {
-										
-									}
-								}
-							});
-        }, 5000);		
+			$.ajax({ url: "${BASE_PATH}/app/update", context: document.body, 
+				dataType : 'json',
+				type: 'POST',
+				success: function(data){
+					if (data.mountStatus == 0){
+						$("#status").html('无用户登陆');
+						$("#controlBtnGroup").hide();
+						$("#amountDiv").hide();
+					}
+					else {
+						$("#status").html(data.phoneNumber + '  已经登陆');
+						$("#controlBtnGroup").show();
+						$("#amountDiv").show();
+					}
+        			
+      		}});            
+        }, 500);		
 	</script>
 </html>

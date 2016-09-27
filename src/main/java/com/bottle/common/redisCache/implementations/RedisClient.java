@@ -15,6 +15,7 @@ import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
 import com.bottle.common.AbstractBaseBean;
+import com.bottle.common.redisCache.common.IRedisConstants;
 import com.bottle.common.redisCache.common.SerializeUtil;
 import com.bottle.common.redisCache.interfaces.IRedisClient;
 
@@ -24,7 +25,6 @@ public class RedisClient extends AbstractBaseBean implements IRedisClient{
 	private ShardedJedis  jedis;
 	private String ipAddress = "109.205.92.110";
 	private Integer port = 6379;
-	private Integer expireTime = 100;
 	private Integer checkConnectJobSleepTime=1000*60;
 
 	protected void logErrorAndStack(final Throwable e, final String errorMessage){
@@ -125,7 +125,7 @@ public class RedisClient extends AbstractBaseBean implements IRedisClient{
 	@Override
 	public void write_ByDefaultExpireTime(String strKey, byte[] value) {
 		jedis.set(SerializeUtil.serialize(strKey), value);
-		jedis.expire(SerializeUtil.serialize(strKey), expireTime);
+		jedis.expire(SerializeUtil.serialize(strKey), IRedisConstants._Player_ExpireTime_);
 	}
 
 	@Override
