@@ -104,7 +104,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 	
 	@ResponseBody
 	@RequestMapping(value="/smscode/application", method = RequestMethod.POST)
-	protected RestResultVO lySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
+	protected RestResultVO applySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		final long phoneNumber = vo.getPhoneNumber();
@@ -140,6 +140,8 @@ public class PlayerController extends AbstractBaseController implements IControl
 			else {
 				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
 			}
+			
+			super.logErrorAndStack(e, e.getMessage());
 		}
 		
 		return resultVO;
@@ -160,6 +162,8 @@ public class PlayerController extends AbstractBaseController implements IControl
 			else {
 				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
 			}
+			
+			super.logErrorAndStack(e, e.getMessage());
 		}
 		
 		return resultVO;
