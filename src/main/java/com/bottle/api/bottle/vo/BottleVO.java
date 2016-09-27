@@ -8,6 +8,7 @@ public class BottleVO implements Serializable{
 	String name = "";
 	long status = 0L;
 	String location = "";
+	String identifier = "";
 	
 	public long getId() {
 		return id;
@@ -32,10 +33,16 @@ public class BottleVO implements Serializable{
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}	
+	public String getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 	@Override
 	public String toString() {
 		return "BottleVO [id=" + id + ", name=" + name + ", status=" + status
-				+ ", location=" + location + "]";
+				+ ", location=" + location + ", identifier=" + identifier + "]";
 	}		
 }

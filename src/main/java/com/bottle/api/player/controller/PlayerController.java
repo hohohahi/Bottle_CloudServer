@@ -1,6 +1,6 @@
 package com.bottle.api.player.controller;
 
-import java.util.regex.Pattern;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.controller.AbstractBaseController;
 import com.bottle.api.common.controller.IController;
@@ -101,17 +102,14 @@ public class PlayerController extends AbstractBaseController implements IControl
 		
 		return resultVO;
     }
-/*	
+	
 	@ResponseBody
-	@RequestMapping(value="/smscode/execution", method = RequestMethod.POST)
-	protected RestResultVO verifySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final VerificationVO vo){
+	@RequestMapping(value="/mount", method = RequestMethod.POST)
+	protected RestResultVO mount(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final JSONObject json){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
-		final long phoneNumber = vo.getPhoneNumber();
-		final String smsCode = vo.getCode();
-		
 		try {
-			service.verifySMSCode(phoneNumber, smsCode);
+			service.mount(json);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
 				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
@@ -124,8 +122,11 @@ public class PlayerController extends AbstractBaseController implements IControl
 		
 		return resultVO;
     }
-*/
-	public boolean isMobile(final long phoneNum) {
-		return Pattern.matches(IWebServiceConstants.REGEX_MOBILE, phoneNum + "");
-	}
+
+
+	
+	public static void main(String[] args) {
+        UUID uuid = UUID.randomUUID();
+        System.out.println(uuid);
+    }
 }

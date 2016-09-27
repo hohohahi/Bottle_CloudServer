@@ -46,7 +46,13 @@ public interface IWebServiceConstants {
 		_RestService_Exception_Player_Not_Existed(7L, "The player is not existed."),
 		_RestService_Exception_Player_Already_Existed(8L, "The player is already existed"),
 		_RestService_Exception_Wrong_Password(9L, "The password is wrong"),
-		_RestService_Exception_Player_Already_Login(10L, "The player is already login");
+		_RestService_Exception_Player_Already_Login(10L, "The player is already login"),
+		_RestService_Exception_Parameter_Null(11L, "The parameter is null"),
+		_RestService_Exception_Parameter_Not_Long(12L, "The parameter is not instance of Long"),
+		_RestService_Exception_Parameter_Not_String(13L, "The parameter is not instance of String"),
+		_RestService_Exception_Bottle_Not_Existed(14L, "The bottle is not existed"),
+		_RestService_Exception_Player_Not_Login(15L, "The player is not login"),
+		_RestService_Exception_Bottle_Already_Mounted(16L, "The bottle is already mounted");
 		
 		private long errorCode = 0L;
 		private String errorMessage = "";

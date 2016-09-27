@@ -48,6 +48,7 @@
 										<th>名称</th>
 										<th>状态</th>
 										<th>地址</th>
+										<th>标识符</th>
                 						<th>查看二维码</th>
               						</tr>
                                 </thead>
@@ -62,6 +63,9 @@
                							</td>
                							<td>
                								${e.location}
+               							</td>
+               							<td>
+               								${e.identifier}
                							</td>
                             			<td>
                             				to be added

@@ -5,12 +5,16 @@
 	<insert id="insert" parameterType="com.bottle.api.bottle.vo.BottleVO">
 		insert into
 		bottle
-		(name, status, location)
+		(name, status, location, identifier)
 		values
-		(#{name},#{status}, #{location})		
+		(#{name},#{status}, #{location}, #{identifier})		
 	</insert>
 	
 	<select id="selectAll" resultType="com.bottle.api.bottle.vo.BottleVO">
 		select * from bottle
+	</select>
+	
+	<select id="selectOneByIdentifier" resultType="com.bottle.api.bottle.vo.BottleVO">
+		select * from bottle where identifier = #{identifier}
 	</select>
 </mapper>

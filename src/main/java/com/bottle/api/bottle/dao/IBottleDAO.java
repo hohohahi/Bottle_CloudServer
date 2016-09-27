@@ -10,4 +10,5 @@ import com.bottle.api.bottle.vo.BottleVO;
 public interface IBottleDAO {
 	public void insert(final BottleVO vo);
 	public List<BottleVO> selectAll();
+	public BottleVO selectOneByIdentifier(final String identifier);
 }

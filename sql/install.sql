@@ -17,7 +17,9 @@ CREATE TABLE `bottle` (
   `name` varchar(500) DEFAULT '0' COMMENT 'name',
   `status` bigint(20) DEFAULT '0',  
   `location` varchar(500) DEFAULT '湖南省长沙市',
-  PRIMARY KEY (`id`)
+  `identifier` varchar(200) DEFAULT '唯一标识符',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='bottle';
 
 DROP TABLE IF EXISTS phoneAndCodeMap;
@@ -171,6 +173,6 @@ INSERT INTO `config` VALUES ('shishuo_seo_title','师说CMS','网站名称','201
 INSERT INTO `config` VALUES ('shishuo_static','false','是否启用全站静态化','2012-08-08 00:00:00');
 INSERT INTO `config` VALUES ('shishuo_template','blog','模板','2012-08-08 00:00:00');
 
-INSERT INTO `bottle` (name, status, location) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区');
+INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
 
 INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版', 1,'检测条形码特征', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);

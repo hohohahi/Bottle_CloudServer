@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bottle.api.bottle.service.interfaces.IBottleService;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.player.dao.IPhoneAndCodeMapDAO;
@@ -16,7 +18,7 @@ import com.bottle.api.player.service.interfaces.ISMSCodeSender;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.common.AbstractBaseBean;
-import com.bottle.common.redisCache.userSession.IPlayerSessionCacheService;
+import com.bottle.common.redisCache.userSession.ISessionCacheService;
 
 @Service
 public class PlayerService extends AbstractBaseBean implements IPlayerService {
@@ -30,7 +32,10 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	private ISMSCodeSender smsCodeSender;
 	
 	@Autowired
-	private IPlayerSessionCacheService sessionService;
+	private ISessionCacheService sessionService;
+	
+	@Autowired
+	private IBottleService bottleService;
 	
 	@Override
 	public void verifySMSCode(long phoneNumber, String smsCode) {
@@ -140,5 +145,60 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		}
 		
 		return playerVOList;
+	}
+
+	@Override
+	public void mount(JSONObject json) {
+		if (null == json){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "json is null.");
+		}
+		
+		final Object phoneNumberObj = json.get("phoneNumber");
+		long phoneNumber = verifyAndGetLong(phoneNumberObj);
+		
+		final Object identifierObj = json.get("identifier");
+		String identifier = verifyAndGetString(identifierObj);
+		
+		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
+		if (false == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Login, json.toString());
+		}
+		
+		final boolean isBottledExisted = bottleService.isBottleExisted_ByIdentifier(identifier);
+		if (false == isBottledExisted){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Not_Existed, json.toString());
+		}
+		
+		if (true == sessionService.isBottleMounted(identifier)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Already_Mounted, json.toString());
+		}
+		
+		sessionService.mount(identifier, phoneNumber);
+	}
+	
+	public Long verifyAndGetLong(Object obj){
+		if (null == obj){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "parameter is null.");
+		}
+		
+		if (false == (obj instanceof Long)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Not_Long, "parameter:" + obj);
+		}
+		
+		final Long rtnLong = (Long)obj;
+		return rtnLong;		
+	}
+	
+	public String verifyAndGetString(Object obj){
+		if (null == obj){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "parameter is null.");
+		}
+		
+		if (false == (obj instanceof String)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Not_String, "parameter:" + obj);
+		}
+		
+		final String rtnString = (String)obj;
+		return rtnString;		
 	}
 }

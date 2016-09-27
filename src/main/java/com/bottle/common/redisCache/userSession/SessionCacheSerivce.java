@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.common.AbstractBaseBean;
+import com.bottle.common.redisCache.common.IRedisConstants;
 import com.bottle.common.redisCache.common.SerializeUtil;
 import com.bottle.common.redisCache.interfaces.IRedisClient;
 
 @Service
-public class PlayerSessionCacheSerivce extends AbstractBaseBean implements IPlayerSessionCacheService{
+public class SessionCacheSerivce extends AbstractBaseBean implements ISessionCacheService{
 	@Autowired
 	private IRedisClient redisClient;	
 	
@@ -86,5 +87,26 @@ public class PlayerSessionCacheSerivce extends AbstractBaseBean implements IPlay
 		}
 		
 		return isLogined;
+	}
+	
+	@Override
+	public boolean isBottleMounted(String identifier) {
+		boolean isMounted = false;
+		if (null == redisClient.readByte(identifier)){
+			isMounted = false;
+		}
+		else {
+			isMounted = true;
+		}
+
+		return isMounted;
+	}
+	@Override
+	public void mount(String identifier, long phoneNumber) {
+		try {
+			redisClient.write(identifier, IRedisConstants._Bottle_Mount_ExpireTime_, SerializeUtil.serialize(phoneNumber));
+		} catch (Exception e) {
+			super.logErrorAndStack(e, e.getMessage());
+		}
 	}
 }

@@ -6,4 +6,5 @@ import com.bottle.api.bottle.vo.BottleVO;
 
 public interface IBottleService {
 	List<BottleVO> selectAll();
+	public boolean isBottleExisted_ByIdentifier(final String identifier);
 }
