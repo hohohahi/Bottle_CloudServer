@@ -151,7 +151,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		try {
-			service.mount(json);
+			service.unmount(json);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
 				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
