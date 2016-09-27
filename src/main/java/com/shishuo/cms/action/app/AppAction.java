@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bottle.api.common.vo.UpdateVO;
+import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
 import com.shishuo.cms.constant.ArticleConstant;
 import com.shishuo.cms.exception.FolderNotFoundException;
@@ -47,7 +48,9 @@ public class AppAction{
 		else {
 			vo.setMountStatus(1);
 			final long phoneNumber = sessionService.getPhoneNumberByIdentifier(identifier);
+			final PlayerVO playerVO = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
 			vo.setPhoneNumber(phoneNumber);
+			vo.setAmount(playerVO.getAmount());
 		}
 		
 		return vo;

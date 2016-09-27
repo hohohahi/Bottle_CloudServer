@@ -113,9 +113,11 @@ input.error:focus {
 						$("#status").html(data.phoneNumber + '  已经登陆');
 						$("#controlBtnGroup").show();
 						$("#amountDiv").show();
+						$("#amount").html(data.amount);
+						
 					}
         			
       		}});            
-        }, 500);		
+        }, 1000);		
 	</script>
 </html>

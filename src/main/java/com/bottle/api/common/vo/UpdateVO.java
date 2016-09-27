@@ -6,6 +6,8 @@ public class UpdateVO {
 	String identifier = "";
 	long phoneNumber = 0L;
 	long mountStatus = 0L;
+	double amount = 0.0d;
+	
 	public long getBottleStatus() {
 		return bottleStatus;
 	}
@@ -30,10 +32,17 @@ public class UpdateVO {
 	public void setMountStatus(long mountStatus) {
 		this.mountStatus = mountStatus;
 	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
 	@Override
 	public String toString() {
 		return "UpdateVO [bottleStatus=" + bottleStatus + ", identifier="
 				+ identifier + ", phoneNumber=" + phoneNumber
-				+ ", mountStatus=" + mountStatus + "]";
+				+ ", mountStatus=" + mountStatus
+				+ ", amount=" + amount+ "]";
 	}
 }

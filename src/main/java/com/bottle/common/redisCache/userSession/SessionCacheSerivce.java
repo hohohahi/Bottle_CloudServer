@@ -131,11 +131,19 @@ public class SessionCacheSerivce extends AbstractBaseBean implements ISessionCac
 			throw new NullPointerException("obj is null.");
 		}
 		
-		if (false == (obj instanceof Long)) {
-			throw new RuntimeException("obj is not instance of Long.");
+		if (false == (obj instanceof Long)
+				&& false == (obj instanceof Integer)) {
+			throw new RuntimeException("obj is not instance of Long, or Integer.");
 		}
 		
-		final long phoneNumber = (Long)obj;
+		long phoneNumber = 0L;
+		if (true == (obj instanceof Long)){
+			phoneNumber = (Long)obj;
+		}
+		if (true == (obj instanceof Integer)){
+			phoneNumber = (Integer)obj;
+		}
+		
 		return phoneNumber;
 	}
 	@Override
