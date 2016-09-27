@@ -189,6 +189,19 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		return rtnLong;		
 	}
 	
+	public Integer verifyAndGetInteger(Object obj){
+		if (null == obj){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "parameter is null.");
+		}
+		
+		if (false == (obj instanceof Integer)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Not_Long, "parameter:" + obj);
+		}
+		
+		final Integer rtnInteger = (Integer)obj;
+		return rtnInteger;		
+	}
+	
 	public String verifyAndGetString(Object obj){
 		if (null == obj){
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "parameter is null.");
@@ -200,5 +213,56 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		
 		final String rtnString = (String)obj;
 		return rtnString;		
+	}
+
+	@Override
+	public void logout(final JSONObject json) {
+		final Object phoneNumberObj = json.get("phoneNumber");
+		final long phoneNumber = (long)verifyAndGetLong(phoneNumberObj);
+		if (false == isMobile(phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
+		}
+		
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if (null == playerVO) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Existed);			
+		}
+		
+		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
+		if (false == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Login, playerVO_Cache.toString());
+		}
+		
+		sessionService.removePlayerSession(phoneNumber);
+		bottleService.removeCacheByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public void unmount(JSONObject json) {
+		if (null == json){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Parameter_Null, "json is null.");
+		}
+		
+		final Object phoneNumberObj = json.get("phoneNumber");
+		long phoneNumber = verifyAndGetLong(phoneNumberObj);
+		
+		final Object identifierObj = json.get("identifier");
+		String identifier = verifyAndGetString(identifierObj);
+		
+		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
+		if (false == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Login, json.toString());
+		}
+		
+		final boolean isBottledExisted = bottleService.isBottleExisted_ByIdentifier(identifier);
+		if (false == isBottledExisted){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Not_Existed, json.toString());
+		}
+		
+		if (false == sessionService.isBottleMounted(identifier)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Not_Mounted, json.toString());
+		}
+		
+		sessionService.unmount(identifier);
 	}
 }

@@ -52,7 +52,8 @@ public interface IWebServiceConstants {
 		_RestService_Exception_Parameter_Not_String(13L, "The parameter is not instance of String"),
 		_RestService_Exception_Bottle_Not_Existed(14L, "The bottle is not existed"),
 		_RestService_Exception_Player_Not_Login(15L, "The player is not login"),
-		_RestService_Exception_Bottle_Already_Mounted(16L, "The bottle is already mounted");
+		_RestService_Exception_Bottle_Already_Mounted(16L, "The bottle is already mounted"),
+		_RestService_Exception_Bottle_Not_Mounted(17L, "The bottle is not mounted");
 		
 		private long errorCode = 0L;
 		private String errorMessage = "";

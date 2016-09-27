@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bottle.api.bottle.constants.IBottleConstants;
 import com.bottle.api.bottle.dao.IBottleDAO;
 import com.bottle.api.bottle.service.interfaces.IBottleService;
 import com.bottle.api.bottle.vo.BottleVO;
@@ -19,6 +18,9 @@ import com.bottle.common.redisCache.userSession.ISessionCacheService;
 public class BottleService extends AbstractBaseBean implements IBottleService {	
 	@Autowired
 	private IBottleDAO bottleDAO;
+	
+	@Autowired
+	private ISessionCacheService sessionService;
 	
 	@Override
 	public List<BottleVO> selectAll() {
@@ -44,5 +46,26 @@ public class BottleService extends AbstractBaseBean implements IBottleService {
 		}
 		
 		return isExisted;
+	}
+
+	@Override
+	public void removeCacheByPhoneNumber(long phoneNumber) {
+		List<BottleVO> voList = bottleDAO.selectAll();
+		
+		for (final BottleVO vo : voList) {
+			super.validateObject(vo);
+			final String identifier = vo.getIdentifier();
+			
+			long cachedPhoneNumber = 0L;
+			try {
+				cachedPhoneNumber = sessionService.getPhoneNumberByIdentifier(identifier);
+				
+				if (cachedPhoneNumber == phoneNumber) {
+					sessionService.removeByKey(identifier);
+				}
+			} catch (Exception e) {
+				super.debugLog("Error as Debug. message:" + e.getMessage());
+			}						
+		}		
 	}
 }

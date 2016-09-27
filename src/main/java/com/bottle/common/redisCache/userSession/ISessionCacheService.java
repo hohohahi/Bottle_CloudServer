@@ -7,6 +7,9 @@ public interface ISessionCacheService {
 	public void setPlayerSession(final long phoneNumber, final PlayerVO vo);
 	public PlayerVO getPlayerVOByPhoneNumber(final long phoneNumber);
 	public boolean isPlayerLogined(final PlayerVO cacheVO, final long phoneNumber);
-	public boolean isBottleMounted(final String identifier);
+	public boolean isBottleMounted(final String identifier);	
 	public void mount(final String identifier, final long phoneNumber);
+	public void unmount(final String identifier);
+	public long getPhoneNumberByIdentifier(final String identifier);	
+	public void removeByKey(final String identifier);
 }

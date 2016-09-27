@@ -109,4 +109,41 @@ public class SessionCacheSerivce extends AbstractBaseBean implements ISessionCac
 			super.logErrorAndStack(e, e.getMessage());
 		}
 	}
+	
+	@Override
+	public void unmount(String identifier) {
+		try {
+			redisClient.remove(identifier);;
+		} catch (Exception e) {
+			super.logErrorAndStack(e, e.getMessage());
+		}
+	}
+	
+	@Override
+	public long getPhoneNumberByIdentifier(String identifier) {		
+		byte[] byteArray = redisClient.readByte(identifier);
+		if(null == byteArray){
+			throw new NullPointerException("byteArray is null.");
+		}
+		
+		Object obj = SerializeUtil.unserialize(byteArray);
+		if(null == obj){
+			throw new NullPointerException("obj is null.");
+		}
+		
+		if (false == (obj instanceof Long)) {
+			throw new RuntimeException("obj is not instance of Long.");
+		}
+		
+		final long phoneNumber = (Long)obj;
+		return phoneNumber;
+	}
+	@Override
+	public void removeByKey(String identifier) {
+		try {
+			redisClient.remove(identifier );
+		} catch (Exception e) {
+			super.logErrorAndStack(e, e.getMessage());
+		}		
+	}	
 }

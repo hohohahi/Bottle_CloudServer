@@ -81,6 +81,28 @@ public class PlayerController extends AbstractBaseController implements IControl
     }
 	
 	@ResponseBody
+	@RequestMapping(value="/logout", method = RequestMethod.POST)
+	protected RestResultVO logout(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final JSONObject json){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			service.logout(json);			
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
+		
+		return resultVO;
+    }
+	
+	@ResponseBody
 	@RequestMapping(value="/smscode/application", method = RequestMethod.POST)
 	protected RestResultVO lySMSCode(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
@@ -123,6 +145,25 @@ public class PlayerController extends AbstractBaseController implements IControl
 		return resultVO;
     }
 
+	@ResponseBody
+	@RequestMapping(value="/unmount", method = RequestMethod.POST)
+	protected RestResultVO unmount(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final JSONObject json){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			service.mount(json);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+		}
+		
+		return resultVO;
+    }
 
 	
 	public static void main(String[] args) {

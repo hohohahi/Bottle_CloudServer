@@ -9,7 +9,9 @@ public interface IPlayerService {
 	void verifySMSCode(final long phoneNumber, final String smsCode);
 	void register(final PlayerVO vo);
 	void applySMSCode(final long phoneNumber);
-	PlayerVO login(final PlayerVO vo);
-	List<PlayerVO> selectAll();
-	void mount(JSONObject json);
+	PlayerVO login(final PlayerVO vo);	
+	List<PlayerVO> selectAll();	
+	void logout(final JSONObject json);
+	void mount(final JSONObject json);
+	void unmount(final JSONObject json);
 }
