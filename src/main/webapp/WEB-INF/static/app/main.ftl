@@ -118,6 +118,6 @@ input.error:focus {
 					}
         			
       		}});            
-        }, 1000);		
+        }, 900);		
 	</script>
 </html>
