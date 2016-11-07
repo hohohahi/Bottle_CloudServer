@@ -81,6 +81,29 @@ public class PlayerController extends AbstractBaseController implements IControl
     }
 	
 	@ResponseBody
+	@RequestMapping(value="/information", method = RequestMethod.POST)
+	protected RestResultVO getPlayerInformation(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			final PlayerVO realVO = service.getPlayerInfo_ByPhoneNumber(vo.getPhoneNumber());
+			resultVO.setData(realVO);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
+		
+		return resultVO;
+    }
+	
+	@ResponseBody
 	@RequestMapping(value="/logout", method = RequestMethod.POST)
 	protected RestResultVO logout(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final JSONObject json){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);

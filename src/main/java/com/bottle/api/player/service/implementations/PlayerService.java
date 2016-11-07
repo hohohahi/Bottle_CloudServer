@@ -136,6 +136,20 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	}
 
 	@Override
+	public PlayerVO getPlayerInfo_ByPhoneNumber(final long phoneNumber) {
+		if (false == isMobile(phoneNumber)){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid);
+		}
+		
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if (null == playerVO) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Existed);			
+		}
+		
+		return playerVO;
+	}
+	
+	@Override
 	public List<PlayerVO> selectAll() {
 		List<PlayerVO> playerVOList = new ArrayList<PlayerVO>();
 		try {

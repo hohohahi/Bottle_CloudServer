@@ -14,4 +14,5 @@ public interface IPlayerService {
 	void logout(final JSONObject json);
 	void mount(final JSONObject json);
 	void unmount(final JSONObject json);
+	PlayerVO getPlayerInfo_ByPhoneNumber(final long phoneNumber);
 }
