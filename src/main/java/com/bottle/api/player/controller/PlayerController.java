@@ -109,6 +109,8 @@ public class PlayerController extends AbstractBaseController implements IControl
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
 		try {
+			
+			
 			final String retString = service.telWithdraw(vo.getPhoneNumber(),vo.getAmount());
 			resultVO.setData(retString);
 		} catch (Exception e) {
