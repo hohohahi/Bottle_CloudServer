@@ -142,17 +142,17 @@ httpClient.close();
    */
 public static String ConvertStreamToString(InputStream is, String charset)
 throws Exception {
-StringBuilder sb = new StringBuilder();
-try (InputStreamReader inputStreamReader = new InputStreamReader(is,
-charset)) {
-try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
-String line = null;
-while ((line = reader.readLine()) != null) {
-sb.append(line).append("\r\n");
-}
-}
-}
-return sb.toString();
+	
+			StringBuilder sb = new StringBuilder();
+			InputStreamReader inputStreamReader = new InputStreamReader(is,charset);
+
+			BufferedReader reader = new BufferedReader(inputStreamReader); 
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append("\r\n");
+			}
+	
+			return sb.toString();
 }
 
 
