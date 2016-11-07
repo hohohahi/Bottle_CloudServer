@@ -297,6 +297,20 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		String result="";
 		try {
 			result=TelWithdrawUtil.onlineOrder(String.valueOf(phoneNumber),(int)amount,FuncUtil.getRandomString());
+			net.sf.json.JSONObject  obj=net.sf.json.JSONObject.fromObject(result);
+			Object o=obj.get("error_code");
+			if(o instanceof Integer){
+				int flag=(Integer)o;
+				if(flag==0){
+					PlayerVO vo=new PlayerVO();
+					double resultAmount=playerVO.getAmount()-amount;
+					vo.setAmount(resultAmount);
+					vo.setPhoneNumber(playerVO.getPhoneNumber());
+					playerDAO.updateAmountByPhoneNumber(vo);
+				}else{
+					throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, obj.getString("reason"));
+				}
+			}
 		} catch (Exception e) {
 			String errorMsg="error happen,please contact,"+e.getMessage();
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, errorMsg);
