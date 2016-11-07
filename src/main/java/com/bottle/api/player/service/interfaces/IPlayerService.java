@@ -16,4 +16,5 @@ public interface IPlayerService {
 	void unmount(final JSONObject json);
 	PlayerVO getPlayerInfo_ByPhoneNumber(final long phoneNumber);
 	String telWithdraw(final long phoneNumber,double amount);
+	void updateAmount(final long phoneNumber, final double amount);
 }
