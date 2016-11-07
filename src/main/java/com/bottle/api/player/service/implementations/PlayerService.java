@@ -127,11 +127,6 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Wrong_Password);
 		}
 		
-		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
-		if (true == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Already_Login, playerVO_Cache.toString());
-		}
-		
 		//add to map
 		sessionService.setPlayerSession(phoneNumber, playerVO);
 		return playerVO;
