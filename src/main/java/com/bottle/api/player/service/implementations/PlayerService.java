@@ -17,6 +17,8 @@ import com.bottle.api.player.service.interfaces.IPlayerService;
 import com.bottle.api.player.service.interfaces.ISMSCodeSender;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
+import com.bottle.api.ui.FuncUtil;
+import com.bottle.api.ui.TelWithdrawUtil;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
 
@@ -278,5 +280,28 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		}
 		
 		sessionService.unmount(identifier);
+	}
+
+	@Override
+	public String telWithdraw(long phoneNumber, double amount) {
+		
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if(playerVO==null){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid, "不存在");
+		}
+		
+		if(playerVO.getAmount()<amount){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Not_Enough, "amount不夠");
+		}
+		
+		String result="";
+		try {
+			result=TelWithdrawUtil.onlineOrder(String.valueOf(phoneNumber),(int)amount,FuncUtil.getRandomString());
+		} catch (Exception e) {
+			String errorMsg="error happen,please contact,"+e.getMessage();
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, errorMsg);
+			
+		}
+		return result;
 	}
 }
