@@ -10,5 +10,6 @@ import com.bottle.api.player.vo.PlayerVO;
 public interface IPlayerDAO {
 	public void insert(final PlayerVO vo);
 	public PlayerVO selectOne_ByPhoneNumber(final long phoneNumber);
+	public void updateAmountByPhoneNumber(final PlayerVO vo);
 	public List<PlayerVO> selectAll();
 }

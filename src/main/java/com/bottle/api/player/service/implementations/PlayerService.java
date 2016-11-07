@@ -311,6 +311,7 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		super.validateObject(playerVO);
 		
 		double newAmount = playerVO.getAmount() + amount;
-		
+		playerVO.setAmount(newAmount);
+		playerDAO.updateAmountByPhoneNumber(playerVO);
 	}
 }
