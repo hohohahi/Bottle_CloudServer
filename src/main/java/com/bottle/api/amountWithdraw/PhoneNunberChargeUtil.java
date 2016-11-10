@@ -74,12 +74,12 @@ public class PhoneNunberChargeUtil {
 	*/
 	public static String onlineOrder(String phone,int cardnum,String orderid) throws Exception{
 		String resultStr = null;
-		//Md5Util工具类
-//		String sign = FuncUtil.getPasswordMD5(openId+key+phone+cardnum+orderid);
-//		resultStr = get(onlineUrl.replace("*", cardnum+"").replace("!", phone).replace("@", orderid).replace("$", sign),0);
-//		
-		String tme="{\"reason\":\"订单提交成功，等待充值\",\"result\":{\"cardid\":\"10310\",\"cardnum\":\"1\",\"ordercash\":10.08,\"cardname\":\"湖南移动话费10元\",\"sporder_id\":\"J16102910402629169456859\",\"uorderid\":\"12xx345xxxxx678\",\"game_userid\":\"13787210140\",\"game_state\":\"0\"},\"error_code\":0}";
-		return tme;
+	
+		String sign = FuncUtil.getPasswordMD5(openId+key+phone+cardnum+orderid);
+		resultStr = get(onlineUrl.replace("*", cardnum+"").replace("!", phone).replace("@", orderid).replace("$", sign),0);
+		
+		//String tme="{\"reason\":\"订单提交成功，等待充值\",\"result\":{\"cardid\":\"10310\",\"cardnum\":\"1\",\"ordercash\":10.08,\"cardname\":\"湖南移动话费10元\",\"sporder_id\":\"J16102910402629169456859\",\"uorderid\":\"12xx345xxxxx678\",\"game_userid\":\"13787210140\",\"game_state\":\"0\"},\"error_code\":0}";
+		return resultStr;
 	}
 	/**
 	* 4.查询账户余额
