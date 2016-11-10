@@ -81,7 +81,7 @@ public class PlayerController extends AbstractBaseController implements IControl
     }
 	
 	@ResponseBody
-	@RequestMapping(value="/information", method = RequestMethod.POST)
+	@RequestMapping(value="/informations", method = RequestMethod.POST)
 	protected RestResultVO getPlayerInformation(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		super.debugLog(" phoneNumber = "+vo.getPhoneNumber());
