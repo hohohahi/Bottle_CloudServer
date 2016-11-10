@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bottle.api.amountWithdraw.WithdrawResponseVO;
+import com.bottle.api.amountWithdraw.implement.IAmountWithdrawService;
 import com.bottle.api.bottle.service.interfaces.IBottleService;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.exception.MyAPIRuntimeException;
@@ -17,8 +19,6 @@ import com.bottle.api.player.service.interfaces.IPlayerService;
 import com.bottle.api.player.service.interfaces.ISMSCodeSender;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
-import com.bottle.api.ui.FuncUtil;
-import com.bottle.api.ui.TelWithdrawUtil;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
 
@@ -39,6 +39,9 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	@Autowired
 	private IBottleService bottleService;
 	
+	
+	@Autowired
+	private IAmountWithdrawService amountWithdrawService;
 	@Override
 	public void verifySMSCode(long phoneNumber, String smsCode) {
 		if (false == isMobile(phoneNumber)){
@@ -280,38 +283,12 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	@Override
 	public String telWithdraw(long phoneNumber, double amount) {
 		
-		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
-		if(playerVO==null){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_PhoneNum_Invalid, "不存在");
-		}
 		
-		if(playerVO.getAmount()<amount){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Not_Enough, "amount不夠");
+		WithdrawResponseVO responseVo=amountWithdrawService.doWithdraw(amount, IAmountWithdrawService.WithdrawByPhoneNumberCharge, phoneNumber);
+		if(responseVo.isOk()==false){
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getErrorMsg());
 		}
-		
-		String result="";
-		try {
-			result=TelWithdrawUtil.onlineOrder(String.valueOf(phoneNumber),(int)amount,FuncUtil.getRandomString());
-			net.sf.json.JSONObject  obj=net.sf.json.JSONObject.fromObject(result);
-			Object o=obj.get("error_code");
-			if(o instanceof Integer){
-				int flag=(Integer)o;
-				if(flag==0){
-					PlayerVO vo=new PlayerVO();
-					double resultAmount=playerVO.getAmount()-amount;
-					vo.setAmount(resultAmount);
-					vo.setPhoneNumber(playerVO.getPhoneNumber());
-					playerDAO.updateAmountByPhoneNumber(vo);
-				}else{
-					throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, obj.getString("reason"));
-				}
-			}
-		} catch (Exception e) {
-			String errorMsg="error happen,please contact,"+e.getMessage();
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, errorMsg);
-			
-		}
-		return result;
+		return responseVo.toString();
 	}
 
 	@Override
