@@ -84,10 +84,10 @@ public class PlayerController extends AbstractBaseController implements IControl
 	@RequestMapping(value="/information", method = RequestMethod.POST)
 	protected RestResultVO getPlayerInformation(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final PlayerVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
-		
+		super.debugLog(" phoneNumber = "+vo.getPhoneNumber());
 		try {
 			final PlayerVO realVO = service.getPlayerInfo_ByPhoneNumber(vo.getPhoneNumber());
-			super.debugLog(" phoneNumber = "+vo.getPhoneNumber()+", return  realVO = "+realVO);
+			super.debugLog("  return  realVO = "+realVO);
 			resultVO.setData(realVO);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
