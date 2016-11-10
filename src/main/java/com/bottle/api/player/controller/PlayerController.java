@@ -87,6 +87,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 		
 		try {
 			final PlayerVO realVO = service.getPlayerInfo_ByPhoneNumber(vo.getPhoneNumber());
+			super.debugLog(" phoneNumber = "+vo.getPhoneNumber()+", return  realVO = "+realVO);
 			resultVO.setData(realVO);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
