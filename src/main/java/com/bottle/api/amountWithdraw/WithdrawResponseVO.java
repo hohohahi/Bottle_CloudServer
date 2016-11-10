@@ -2,7 +2,7 @@ package com.bottle.api.amountWithdraw;
 
 public class WithdrawResponseVO {
 	private boolean isOk;
-	private String errorMsg;
+	private String reason;
 	private String details;
 	private String originReturnMsg;
 	
@@ -19,11 +19,11 @@ public class WithdrawResponseVO {
 	public void setOk(boolean isOk) {
 		this.isOk = isOk;
 	}
-	public String getErrorMsg() {
-		return errorMsg;
+	public String getReason() {
+		return reason;
 	}
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	public String getDetails() {
 		return details;
@@ -36,7 +36,7 @@ public class WithdrawResponseVO {
 	public String toString(){
 		StringBuilder sbMsg=new StringBuilder();
 		sbMsg.append("WithdrawResponseVO[  isOk = ").append(isOk)
-			.append(", errorMsg = ").append(errorMsg)
+			.append(", reason = ").append(reason)
 			.append(", details = ").append(details).append(" ,originReturnMsg = ").append(originReturnMsg).append(" ]");
 		
 		return sbMsg.toString();

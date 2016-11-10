@@ -35,13 +35,13 @@ public class AmountWithdrawService implements IAmountWithdrawService{
 				String result=net.sf.json.JSONObject.fromObject(returnMsg).getString(PhoneNunberChargeUtil.Return_Result);
 				if(errorCode==0){
 					vo.setOk(true);
-					vo.setErrorMsg(reason);
-				}if(errorCode==208517){
+					vo.setReason(reason);
+				}else if(errorCode==208517){
 					vo.setOk(false);
-					vo.setErrorMsg("系统账户金额不足");
+					vo.setReason("系统账户金额不足");
 				}else{
 					vo.setOk(false);
-					vo.setErrorMsg(reason);
+					vo.setReason(reason);
 				}
 				vo.setOriginReturnMsg(returnMsg);
 				vo.setDetails(result);

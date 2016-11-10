@@ -286,9 +286,16 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		
 		WithdrawResponseVO responseVo=amountWithdrawService.doWithdraw(amount, IAmountWithdrawService.WithdrawByPhoneNumberCharge, phoneNumber);
 		if(responseVo.isOk()==false){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getErrorMsg());
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getReason());
+		}else{
+			final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+			PlayerVO vo=new PlayerVO();
+			double resultAmount=playerVO.getAmount()-amount;
+			vo.setAmount(resultAmount);
+			vo.setPhoneNumber(playerVO.getPhoneNumber());
+			playerDAO.updateAmountByPhoneNumber(vo);
 		}
-		return responseVo.toString();
+		return responseVo.getReason();
 	}
 
 	@Override
