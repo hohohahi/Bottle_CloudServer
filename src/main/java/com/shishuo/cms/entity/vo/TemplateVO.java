@@ -5,6 +5,11 @@ import java.sql.Timestamp;
 public class TemplateVO {
 	long id = 0L;
 	String name = "";
+	String barCode = "";
+	double price = 0.0d;
+	long isMetal = 0L; //1, yes; 0, no
+	long weight = 0L;
+	String imageCharacteristic = "";
 	long status = 0L;
 	String description = "";
 	Timestamp createdDate = new Timestamp(0L);
@@ -22,6 +27,36 @@ public class TemplateVO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getBarCode() {
+		return barCode;
+	}
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public long getIsMetal() {
+		return isMetal;
+	}
+	public void setIsMetal(long isMetal) {
+		this.isMetal = isMetal;
+	}
+	public long getWeight() {
+		return weight;
+	}
+	public void setWeight(long weight) {
+		this.weight = weight;
+	}
+	public String getImageCharacteristic() {
+		return imageCharacteristic;
+	}
+	public void setImageCharacteristic(String imageCharacteristic) {
+		this.imageCharacteristic = imageCharacteristic;
 	}
 	public long getStatus() {
 		return status;
@@ -61,9 +96,12 @@ public class TemplateVO {
 	}
 	@Override
 	public String toString() {
-		return "TemplateVO [id=" + id + ", name=" + name + ", status=" + status
-				+ ", description=" + description + ", createdDate="
-				+ createdDate + ", createdBy=" + createdBy + ", modifiedDate="
-				+ modifiedDate + ", modifiedBy=" + modifiedBy + "]";
+		return "TemplateVO [id=" + id + ", name=" + name + ", barCode="
+				+ barCode + ", price=" + price + ", isMetal=" + isMetal
+				+ ", weight=" + weight + ", imageCharacteristic="
+				+ imageCharacteristic + ", status=" + status + ", description="
+				+ description + ", createdDate=" + createdDate + ", createdBy="
+				+ createdBy + ", modifiedDate=" + modifiedDate
+				+ ", modifiedBy=" + modifiedBy + "]";
 	}
 }
