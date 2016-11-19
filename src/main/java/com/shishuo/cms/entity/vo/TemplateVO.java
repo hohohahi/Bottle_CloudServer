@@ -1,21 +1,24 @@
 package com.shishuo.cms.entity.vo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TemplateVO {
-	long id = 0L;
-	String name = "";
-	String barCode = "";
-	double price = 0.0d;
-	long isMetal = 0L; //1, yes; 0, no
-	long weight = 0L;
-	String imageCharacteristic = "";
-	long status = 0L;
-	String description = "";
-	Timestamp createdDate = new Timestamp(0L);
-	long createdBy = 0L;
-	Timestamp modifiedDate = new Timestamp(0L);
-	long modifiedBy = 0L;
+	private long id = 0L;
+	private String name = "";
+	private String barCode = "";
+	private double price = 0.0d;
+	private long isMetal = 0L; //1, yes; 0, no
+	private long weight = 0L;
+	private List<PositionInfoVO> positionInfoList = new ArrayList<PositionInfoVO>();
+	private long status = 0L;
+	private String description = "";
+	private Timestamp createdDate = new Timestamp(0L);
+	private long createdBy = 0L;
+	private Timestamp modifiedDate = new Timestamp(0L);
+	private long modifiedBy = 0L;
+	
 	public long getId() {
 		return id;
 	}
@@ -51,12 +54,6 @@ public class TemplateVO {
 	}
 	public void setWeight(long weight) {
 		this.weight = weight;
-	}
-	public String getImageCharacteristic() {
-		return imageCharacteristic;
-	}
-	public void setImageCharacteristic(String imageCharacteristic) {
-		this.imageCharacteristic = imageCharacteristic;
 	}
 	public long getStatus() {
 		return status;
@@ -94,14 +91,18 @@ public class TemplateVO {
 	public void setModifiedBy(long modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+	
+	public List<PositionInfoVO> getPositionInfoList() {
+		return positionInfoList;
+	}
+	public void setPositionInfoList(List<PositionInfoVO> positionInfoList) {
+		this.positionInfoList = positionInfoList;
+	}
 	@Override
 	public String toString() {
-		return "TemplateVO [id=" + id + ", name=" + name + ", barCode="
-				+ barCode + ", price=" + price + ", isMetal=" + isMetal
-				+ ", weight=" + weight + ", imageCharacteristic="
-				+ imageCharacteristic + ", status=" + status + ", description="
-				+ description + ", createdDate=" + createdDate + ", createdBy="
-				+ createdBy + ", modifiedDate=" + modifiedDate
-				+ ", modifiedBy=" + modifiedBy + "]";
+		return "TemplateVO [id=" + id + ", name=" + name + ", barCode=" + barCode + ", price=" + price + ", isMetal="
+				+ isMetal + ", weight=" + weight + ", positionInfoList=" + positionInfoList + ", status=" + status
+				+ ", description=" + description + ", createdDate=" + createdDate + ", createdBy=" + createdBy
+				+ ", modifiedDate=" + modifiedDate + ", modifiedBy=" + modifiedBy + "]";
 	}
 }
