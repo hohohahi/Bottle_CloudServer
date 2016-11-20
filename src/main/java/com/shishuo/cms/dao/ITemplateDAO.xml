@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-  
+	
 <mapper namespace="com.shishuo.cms.dao.ITemplateDAO">
 	<insert id="insert" parameterType="com.shishuo.cms.entity.vo.TemplateVO">
 		insert into
 		template
-		(name, status, description, createdDate, createdBy, modifiedDate, modifiedBy)
-		values
-		(#{name},#{status}, #{description}, #{createdDate},#{createdBy}, #{modifiedDate}, #{modifiedBy})
+		(name,            barCode,     price,           isMetal,          weight, 
+		posNum,           status,      description,     createdDate,      createdBy,
+		modifiedDate,     modifiedBy)		
+		values		
+		(#{name},         #{barCode},  #{price},       #{isMetal},        #{weight}, 
+		#{posNum},        #{status},   #{description}, #{createdDate},    #{createdBy},
+		#{modifiedDate},  #{modifiedBy})
+	</insert>
+	
+	<insert id="insertTemplatePosMap" parameterType="com.shishuo.cms.entity.vo.TemplatePosMapVO">
+		insert into
+		templatePosMap
+		(templateId,            posOrder,     xPos,           yPos)		
+		values		
+		(#{templateId},         #{posOrder},  #{xPos},       #{yPos})
 	</insert>
 	
 	<select id="selectAll" resultType="com.shishuo.cms.entity.vo.TemplateVO">
 		select * from template
+	</select>
+	
+	<select id="selectTemplateByBarCode" resultType="com.shishuo.cms.entity.vo.TemplateVO">
+		select * from template where barCode=#{barCode}
+	</select>
+	
+	<select id="selectTemplatePosMapByTemplateId" resultType="com.shishuo.cms.entity.vo.TemplatePosMapVO">
+		select * from templatePosMap where templateId=#{templateId} order by posOrder asc
 	</select>
 </mapper>

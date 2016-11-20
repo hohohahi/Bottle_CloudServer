@@ -1,9 +1,5 @@
 package com.bottle.api.ui.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,10 +17,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.controller.AbstractBaseController;
 import com.bottle.api.common.controller.IController;
+import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.common.vo.RestResultVO;
 import com.bottle.api.ui.server.IUIService;
 import com.bottle.api.ui.vo.UIVO;
-import com.shishuo.cms.entity.vo.PositionInfoVO;
 import com.shishuo.cms.entity.vo.TemplateVO;
 
 @Controller
@@ -55,53 +51,31 @@ public class UIController extends AbstractBaseController implements IController 
 	protected RestResultVO getTemplateList(final HttpServletResponse response, final HttpServletRequest request){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
-		List<TemplateVO> templateList = new ArrayList<TemplateVO>();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Timestamp ts = null;
-		
-		TemplateVO element = new TemplateVO();
-		element.setBarCode("1234567890abc");
-		element.setId(1L);				
-		ts = Timestamp.valueOf(df.format(new Date()));	
-		List<PositionInfoVO> positionList1 = new ArrayList<PositionInfoVO>();
-		positionList1.add(new PositionInfoVO(1L, 2L));
-		positionList1.add(new PositionInfoVO(3L, 4L));
-		positionList1.add(new PositionInfoVO(5L, 6L));
-		positionList1.add(new PositionInfoVO(7L, 8L));
-		positionList1.add(new PositionInfoVO(9L, 0L));
-		element.setCreatedDate(ts);
-		element.setCreatedBy(2L);
-		element.setPositionInfoList(positionList1);
-		element.setIsMetal(1L);
-		element.setDescription("test");
-		element.setName("farmer water");
-		element.setModifiedBy(3L);
-		element.setModifiedDate(ts);
-		element.setWeight(4L);
-		templateList.add(element);
-		
-		TemplateVO element2 = new TemplateVO();
-		List<PositionInfoVO> positionList2 = new ArrayList<PositionInfoVO>();
-		positionList1.add(new PositionInfoVO(0L, 9L));
-		positionList1.add(new PositionInfoVO(8L, 7L));
-		positionList1.add(new PositionInfoVO(6L, 5L));
-		positionList1.add(new PositionInfoVO(4L, 3L));
-		positionList1.add(new PositionInfoVO(2L, 1L));
-		element2.setBarCode("abcdefghijk01");
-		element2.setId(2L);				
-		ts = Timestamp.valueOf(df.format(new Date()));		
-		element2.setCreatedDate(ts);
-		element2.setCreatedBy(2L);
-		element2.setPositionInfoList(positionList2);
-		element2.setIsMetal(1L);
-		element2.setDescription("test");
-		element2.setName("treasure water");
-		element2.setModifiedBy(3L);
-		element2.setModifiedDate(ts);
-		element2.setWeight(4L);
-		templateList.add(element2);
+		final List<TemplateVO> templateList = uiService.getTemplateList();
 		
 		resultVO.setData(JSONObject.toJSON(templateList));
+		return resultVO;
+    }
+	
+	@ResponseBody
+	@RequestMapping(value="/uploadtemplate", method = RequestMethod.POST)
+	protected RestResultVO uploadTemplate(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final TemplateVO template){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+	
+		try {
+			uiService.uploadTemplate(template);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
+		
 		return resultVO;
     }
 	

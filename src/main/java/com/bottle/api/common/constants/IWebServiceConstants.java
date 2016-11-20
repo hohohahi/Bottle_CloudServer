@@ -55,7 +55,9 @@ public interface IWebServiceConstants {
 		_RestService_Exception_Bottle_Already_Mounted(16L, "The bottle is already mounted"),
 		_RestService_Exception_Bottle_Not_Mounted(17L, "The bottle is not mounted"),
 		_RestService_Exception_Amount_Not_Enough(18L, "user amount is not enought"),
-		_RestService_Exception_Amount_Withdraw_Error(19L, "amount withdraw error");
+		_RestService_Exception_Amount_Withdraw_Error(19L, "amount withdraw error"),
+		_RestService_Exception_Template_Invalid(20L, "Template is invalid format");
+		
 		private long errorCode = 0L;
 		private String errorMessage = "";
 		private String extraMessage = "";

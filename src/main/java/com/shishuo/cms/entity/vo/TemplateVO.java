@@ -11,6 +11,7 @@ public class TemplateVO {
 	private double price = 0.0d;
 	private long isMetal = 0L; //1, yes; 0, no
 	private long weight = 0L;
+	private long posNum = 0L;
 	private List<PositionInfoVO> positionInfoList = new ArrayList<PositionInfoVO>();
 	private long status = 0L;
 	private String description = "";
@@ -92,6 +93,12 @@ public class TemplateVO {
 		this.modifiedBy = modifiedBy;
 	}
 	
+	public long getPosNum() {
+		return posNum;
+	}
+	public void setPosNum(long posNum) {
+		this.posNum = posNum;
+	}
 	public List<PositionInfoVO> getPositionInfoList() {
 		return positionInfoList;
 	}
@@ -101,8 +108,8 @@ public class TemplateVO {
 	@Override
 	public String toString() {
 		return "TemplateVO [id=" + id + ", name=" + name + ", barCode=" + barCode + ", price=" + price + ", isMetal="
-				+ isMetal + ", weight=" + weight + ", positionInfoList=" + positionInfoList + ", status=" + status
-				+ ", description=" + description + ", createdDate=" + createdDate + ", createdBy=" + createdBy
-				+ ", modifiedDate=" + modifiedDate + ", modifiedBy=" + modifiedBy + "]";
+				+ isMetal + ", weight=" + weight + ", posNum=" + posNum + ", positionInfoList=" + positionInfoList
+				+ ", status=" + status + ", description=" + description + ", createdDate=" + createdDate
+				+ ", createdBy=" + createdBy + ", modifiedDate=" + modifiedDate + ", modifiedBy=" + modifiedBy + "]";
 	}
 }

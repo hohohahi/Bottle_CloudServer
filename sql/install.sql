@@ -1,15 +1,32 @@
 DROP TABLE IF EXISTS template;
 CREATE TABLE `template` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `name` varchar(500) DEFAULT '0' COMMENT 'name',
-  `status` bigint(20) DEFAULT '0',
-  `description` varchar(500) DEFAULT '模版描述',
+  `name` varchar(500) not null DEFAULT '0' COMMENT 'name',
+  `barCode` varchar(13) not null DEFAULT '0',
+  `price` double not null DEFAULT 0,
+  `isMetal` bigint(20) not null DEFAULT 0,
+  `weight` bigint(20) not null DEFAULT 0,
+  `posNum` bigint(20) not null DEFAULT 0,
+  `status` bigint(20) not null DEFAULT 0,
+  `description` varchar(500) DEFAULT 'template description',
   `createdDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',
   `createdBy` bigint(20) DEFAULT '0',
   `modifiedDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',
   `modifiedBy` bigint(20) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `barCode_idx` (`barCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='template';
+
+DROP TABLE IF EXISTS templatePosMap;
+CREATE TABLE `templatePosMap` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `templateId` bigint(20) not null DEFAULT 0,
+  `posOrder` bigint(20) not null DEFAULT 0,
+  `xPos` bigint(20) not null DEFAULT 0,
+  `yPos` bigint(20) not null DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `templateId_idx` (`templateId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='templatePosMap';
 
 DROP TABLE IF EXISTS bottle;
 CREATE TABLE `bottle` (

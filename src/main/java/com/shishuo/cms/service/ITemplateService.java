@@ -6,4 +6,5 @@ import com.shishuo.cms.entity.vo.TemplateVO;
 
 public interface ITemplateService {
 	List<TemplateVO> selectAll();
+	void insert(final TemplateVO vo);
 }
