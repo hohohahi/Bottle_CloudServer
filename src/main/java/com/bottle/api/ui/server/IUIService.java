@@ -8,4 +8,5 @@ public interface IUIService {
 	void returnMoneyToPlayer(final long phoneNumber, final double amount);
 	List<TemplateVO> getTemplateList();
 	void uploadTemplate(final TemplateVO template);
+	void deleteTemplate(final TemplateVO template);
 }

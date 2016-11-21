@@ -30,6 +30,18 @@
 		select * from template where barCode=#{barCode}
 	</select>
 	
+	<select id="selectById" resultType="com.shishuo.cms.entity.vo.TemplateVO">
+		select * from template where id=#{id}
+	</select>
+	
+	<delete id="deleteById">
+		delete from template where id=#{id}
+	</delete>
+		
+	<delete id="deleteTemplatePosMapByTemplateId">
+		delete from templatePosMap where templateId=#{templateId}
+	</delete>
+	
 	<select id="selectTemplatePosMapByTemplateId" resultType="com.shishuo.cms.entity.vo.TemplatePosMapVO">
 		select * from templatePosMap where templateId=#{templateId} order by posOrder asc
 	</select>

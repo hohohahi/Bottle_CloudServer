@@ -79,6 +79,29 @@ public class UIController extends AbstractBaseController implements IController 
 		return resultVO;
     }
 	
+	@ResponseBody
+	@RequestMapping(value="/deletetemplate", method = RequestMethod.POST)
+	protected RestResultVO deleteTemplate(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final TemplateVO template){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+	
+		try {
+			uiService.deleteTemplate(template);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
+		
+		return resultVO;
+    }
+	
+	
 	public static void main(String[] args) {
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid);

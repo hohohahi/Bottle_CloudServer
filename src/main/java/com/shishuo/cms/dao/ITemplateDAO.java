@@ -11,6 +11,9 @@ import com.shishuo.cms.entity.vo.TemplateVO;
 @Repository
 public interface ITemplateDAO {
 	public void insert(final TemplateVO vo);
+	public TemplateVO selectById(@Param("id")final long id);
+	public int deleteById(@Param("id")final long id);
+	public int deleteTemplatePosMapByTemplateId(@Param("templateId")final long templateId);
 	public List<TemplateVO> selectAll();
 	public TemplateVO selectTemplateByBarCode(@Param("barCode")final String barCode);
 	public void insertTemplatePosMap(final TemplatePosMapVO vo);	

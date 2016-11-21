@@ -32,4 +32,9 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	public void uploadTemplate(TemplateVO template) {
 		templateService.insert(template);
 	}
+
+	@Override
+	public void deleteTemplate(TemplateVO template) {
+		templateService.delete(template);
+	}
 }

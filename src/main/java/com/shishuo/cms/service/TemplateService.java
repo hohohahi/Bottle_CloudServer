@@ -116,4 +116,43 @@ public class TemplateService extends AbstractBaseBean implements ITemplateServic
 			tempalteDAO.insertTemplatePosMap(mapVO);
 		}
 	}
+
+	@Override
+	public void delete(TemplateVO vo) {
+		super.validateObject(vo);
+		
+		final long templateId = vo.getId();
+		
+		if (templateId <= 0) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Invalid, "template id is equal or less than 0. templateId:" + templateId);
+		}
+		
+		final TemplateVO template = tempalteDAO.selectById(templateId);
+		if (null == template) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Invalid, "template id is not existed. templateId:" + templateId);
+		}
+		
+		final long posNum = template.getPosNum();
+		
+		List<TemplatePosMapVO> templatePosMapList = tempalteDAO.selectTemplatePosMapByTemplateId(templateId);
+		if (null == templatePosMapList) {
+			if (0 != posNum) {
+				throw new RuntimeException("TemplateService::selectAll: can not get template-pos map data. posNum:" + posNum + "--templatePosMapList:" + templatePosMapList);
+			}
+		}
+		
+		final int templatePosMapSize = templatePosMapList.size();
+		if (templatePosMapList.size() != posNum) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Invalid, "posNum is not equal the real size of position list. posNum:" + posNum + "--list size:" + templatePosMapSize);
+		}
+		
+		int templateDeletedNum = tempalteDAO.deleteById(templateId);
+		int templatePosMapDeletedNum = tempalteDAO.deleteTemplatePosMapByTemplateId(templateId);
+		
+		if ((templateDeletedNum != 1) || templatePosMapDeletedNum != posNum) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Invalid, "error when delete template. templateDeletedNum:" + templateDeletedNum
+												+ "--templatePosMapDeletedNum:" + templatePosMapDeletedNum
+												+ "--posNum:" + posNum);
+		}
+	}
 }
