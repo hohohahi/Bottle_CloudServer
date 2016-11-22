@@ -71,6 +71,7 @@ public class UIController extends AbstractBaseController implements IController 
 			}
 			else {
 				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+				resultVO.setExtraMessage(e.getMessage());
 			}
 			
 			super.logErrorAndStack(e, e.getMessage());
