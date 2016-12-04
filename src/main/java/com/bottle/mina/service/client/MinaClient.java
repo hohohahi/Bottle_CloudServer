@@ -30,8 +30,8 @@ public class MinaClient {
         
         final SubscriptionVO subscriptionVO = new SubscriptionVO();
         subscriptionVO.setIdentifier("test identifier");
-        session.write(JSONObject.toJSONString(subscriptionVO));
-        session.write(JSONObject.toJSONString(new TemplateOperationVO()));
+        //session.write(JSONObject.toJSONString(subscriptionVO));
+       // session.write(JSONObject.toJSONString(new TemplateOperationVO()));
 
         session.getCloseFuture().awaitUninterruptibly();
         connector.dispose() ;  
