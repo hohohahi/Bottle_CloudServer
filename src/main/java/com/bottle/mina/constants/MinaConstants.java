@@ -3,7 +3,7 @@ package com.bottle.mina.constants;
 import java.text.SimpleDateFormat;
 
 public class MinaConstants {
-	public static final int PORT=8080;
+	public static final int PORT=8585;
 	public static final int BUFFER_SIZE=120000;
 	public static final String TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
 	public static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(TIME_FORMAT);
