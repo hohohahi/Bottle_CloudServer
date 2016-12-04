@@ -65,6 +65,7 @@ public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
 				session.setAttribute(MinaConstants._sessionKey_Identifier_, subscriptionVO.getIdentifier());
 			}
 			
+			session.write("test write back from mina server.");
 			final String identifier = (String)session.getAttribute("identifier", "default");
 			System.out.println("messageReceived： dentifier:" + identifier + "--message:" + message);
 		} catch (Throwable e) {
