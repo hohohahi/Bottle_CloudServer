@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bottle.api.player.service.interfaces.IPlayerService;
+import com.bottle.backoffice.admin.service.AdminService;
 import com.bottle.common.AbstractBaseBean;
+import com.shishuo.cms.entity.AdminVO;
 import com.shishuo.cms.entity.vo.TemplateVO;
 import com.shishuo.cms.service.ITemplateService;
 
@@ -17,6 +19,9 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	
 	@Autowired
 	private ITemplateService templateService;
+	
+	@Autowired
+	private AdminService adminService;
 	
 	@Override
 	public void returnMoneyToPlayer(long phoneNumber, double amount) {
@@ -36,5 +41,10 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	@Override
 	public void deleteTemplate(TemplateVO template) {
 		templateService.delete(template);
+	}
+
+	@Override
+	public void adminLogin(AdminVO adminVO) {
+		adminService.adminLogin(adminVO);
 	}
 }

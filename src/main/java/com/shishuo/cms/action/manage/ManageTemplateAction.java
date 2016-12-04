@@ -19,10 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.shishuo.cms.action.ArticleAction;
 import com.shishuo.cms.constant.ArticleConstant;
 import com.shishuo.cms.constant.MediaConstant;
-import com.shishuo.cms.entity.Admin;
+import com.shishuo.cms.entity.AdminVO;
 import com.shishuo.cms.entity.Article;
 import com.shishuo.cms.entity.Media;
-import com.shishuo.cms.entity.vo.AdminVo;
+import com.shishuo.cms.entity.vo.AdminVOExt;
 import com.shishuo.cms.entity.vo.ArticleVo;
 import com.shishuo.cms.entity.vo.JsonVo;
 import com.shishuo.cms.entity.vo.TemplateVO;
@@ -52,7 +52,7 @@ public class ManageTemplateAction extends ManageBaseAction {
 			ModelMap modelMap,
 			@RequestParam(value = "folderId", defaultValue = "0") long folderId)
 			throws FolderNotFoundException {
-		Admin admin = this.getAdmin(request);
+		AdminVO admin = this.getAdmin(request);
 		modelMap.put("folderAll",
 				folderService.getAllFolderList(admin.getAdminId()));
 		modelMap.put("folderId", folderId);
@@ -119,7 +119,7 @@ public class ManageTemplateAction extends ManageBaseAction {
 			@RequestParam(value = "articleId", defaultValue = "1") long articleId,
 			ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Admin admin = this.getAdmin(request);
+		AdminVO admin = this.getAdmin(request);
 		ArticleVo article = articleService.getArticleById(articleId);
 		modelMap.put("article", article);
 		modelMap.put("folderAll",
@@ -200,7 +200,7 @@ public class ManageTemplateAction extends ManageBaseAction {
 			@RequestParam(value = "check") ArticleConstant.check check,
 			HttpServletRequest request) throws ArticleNotFoundException {
 		JsonVo<String> json = new JsonVo<String>();
-		AdminVo admin = this.getAdmin(request);
+		AdminVOExt admin = this.getAdmin(request);
 		if (!admin.getIsAdmin()) {
 			json.setResult(false);
 			json.setMsg("您不是超级管理员，无权该审核文件！");

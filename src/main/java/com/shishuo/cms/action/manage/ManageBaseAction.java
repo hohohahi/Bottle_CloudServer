@@ -12,12 +12,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.bottle.backoffice.admin.service.AdminService;
 import com.shishuo.cms.constant.SystemConstant;
-import com.shishuo.cms.entity.vo.AdminVo;
+import com.shishuo.cms.entity.vo.AdminVOExt;
 import com.shishuo.cms.entity.vo.JsonVo;
 import com.shishuo.cms.exception.ValidateException;
 import com.shishuo.cms.service.AdminFolderService;
-import com.shishuo.cms.service.AdminService;
 import com.shishuo.cms.service.ArticleService;
 import com.shishuo.cms.service.ConfigService;
 import com.shishuo.cms.service.FolderService;
@@ -76,8 +76,8 @@ public class ManageBaseAction {
 	 * @param request
 	 * @return
 	 */
-	protected AdminVo getAdmin(HttpServletRequest request) {
-		AdminVo admin = (AdminVo) request.getSession().getAttribute(
+	protected AdminVOExt getAdmin(HttpServletRequest request) {
+		AdminVOExt admin = (AdminVOExt) request.getSession().getAttribute(
 				SystemConstant.SESSION_ADMIN);
 		return admin;
 	}

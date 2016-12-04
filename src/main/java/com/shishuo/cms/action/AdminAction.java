@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bottle.backoffice.admin.service.AdminService;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.shishuo.cms.constant.SystemConstant;
 import com.shishuo.cms.entity.vo.JsonVo;
-import com.shishuo.cms.service.AdminService;
 import com.shishuo.cms.util.HttpUtils;
 
 /**

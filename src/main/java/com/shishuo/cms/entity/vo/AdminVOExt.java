@@ -1,8 +1,8 @@
 package com.shishuo.cms.entity.vo;
 
-import com.shishuo.cms.entity.Admin;
+import com.shishuo.cms.entity.AdminVO;
 
-public class AdminVo extends Admin {
+public class AdminVOExt extends AdminVO {
 
 	private boolean isAdmin;
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.shishuo.cms.entity.Admin;
+import com.shishuo.cms.entity.AdminVO;
 import com.shishuo.cms.entity.vo.JsonVo;
 import com.shishuo.cms.util.SSUtils;
 
@@ -63,7 +63,7 @@ public class ManageAdminAction extends ManageBaseAction {
 			@RequestParam(value = "adminName") String adminName,
 			@RequestParam(value = "password") String password) {
 		JsonVo<String> json = new JsonVo<String>();
-		Admin admin = adminService.getAdminByName(adminName);
+		AdminVO admin = adminService.getAdminByName(adminName);
 		if (admin == null) {
 		} else {
 			json.getErrors().put("adminName", "管理员名称不能重复");
@@ -111,8 +111,8 @@ public class ManageAdminAction extends ManageBaseAction {
 	public String update(
 			@RequestParam(value = "adminId", defaultValue = "0") long adminId,
 			ModelMap modelMap, HttpServletRequest request) {
-		Admin sessionAdmin = this.getAdmin(request);
-		Admin admin = adminService.getAdminById(sessionAdmin.getAdminId());
+		AdminVO sessionAdmin = this.getAdmin(request);
+		AdminVO admin = adminService.getAdminById(sessionAdmin.getAdminId());
 		modelMap.put("admin", admin);
 		return "manage/admin/update";
 	}
@@ -140,7 +140,7 @@ public class ManageAdminAction extends ManageBaseAction {
 			// 检测校验结果
 			validate(json);
 			SSUtils.toText(password);
-			Admin admin = this.getAdmin(request);
+			AdminVO admin = this.getAdmin(request);
 			adminService.updateAdminByAmdinId(admin.getAdminId(),
 					SSUtils.toText(password));
 			json.setResult(true);

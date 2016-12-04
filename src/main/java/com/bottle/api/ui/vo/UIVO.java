@@ -4,6 +4,8 @@ public class UIVO {
 	private String identifier = "";
 	private long phoneNumber = 0L;
 	private double amount = 0.0d;
+	private String username = "";
+	private String password = "";
 	
 	public long getPhoneNumber() {
 		return phoneNumber;

@@ -20,6 +20,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bottle.backoffice.admin.service.AdminService;
 import com.shishuo.cms.constant.ArticleConstant;
 import com.shishuo.cms.constant.FolderConstant;
 import com.shishuo.cms.dao.ArticleDao;

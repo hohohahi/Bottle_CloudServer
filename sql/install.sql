@@ -65,13 +65,29 @@ CREATE TABLE `player` (
 
 DROP TABLE IF EXISTS admin;
 CREATE TABLE `admin` (
-  `adminId` bigint(10) NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
-  `name` varchar(50) DEFAULT NULL COMMENT '管理员名称',
-  `password` varchar(32) DEFAULT NULL COMMENT '密码 MD5加密',
-  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `adminId` bigint(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `password` varchar(32) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
   PRIMARY KEY (`adminId`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员';
+
+DROP TABLE IF EXISTS role;
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) not null DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+DROP TABLE IF EXISTS adminRoleMap;
+CREATE TABLE `adminRoleMap` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `adminId` bigint(20) not null DEFAULT 0,
+  `roleId` bigint(20) not null DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `adminId` (`adminId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 DROP TABLE IF EXISTS admin_folder;
 CREATE TABLE `admin_folder` (
@@ -181,7 +197,8 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户';
 
 
-INSERT INTO `admin` VALUES (1,'shishuocms','6158f875bf826e15923779855b6eef2e','2012-08-08 00:00:00');
+INSERT INTO `admin` (adminId, name, password, createTime) VALUES (1,'admin','admin','2012-08-08 00:00:00');
+INSERT INTO `admin` (adminId, name, password, createTime) VALUES (2,'operator','admin','2012-08-08 00:00:00');
 
 INSERT INTO `config` VALUES ('shishuo_headline_image_height','420','首页头图的高（px）','2012-08-08 00:00:00');
 INSERT INTO `config` VALUES ('shishuo_headline_image_width','858','首页头图的宽（px）','2012-08-08 00:00:00');
@@ -190,6 +207,12 @@ INSERT INTO `config` VALUES ('shishuo_seo_title','师说CMS','网站名称','201
 INSERT INTO `config` VALUES ('shishuo_static','false','是否启用全站静态化','2012-08-08 00:00:00');
 INSERT INTO `config` VALUES ('shishuo_template','blog','模板','2012-08-08 00:00:00');
 
-INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
+insert into player (name, status, phoneNumber, password, amount, smsCode) values ('will', 0, 13787210140, '123', 0, '061009');
+insert into player (name, status, phoneNumber, password, amount, smsCode) values ('Rainman', 0, 18975811415, '123', 99.8, '921934');
 
+INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
 INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版', 1,'检测条形码特征', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
+INSERT INTO `role` (id, name) VALUES (1,'管理员');
+INSERT INTO `role` (id, name) VALUES (2,'后台操作员');
+INSERT INTO `adminRoleMap` (adminId,  roleId) VALUES (1, 1);
+INSERT INTO `adminRoleMap` (adminId,  roleId) VALUES (2, 2);

@@ -1,42 +1,17 @@
-/*
- *	Copyright © 2013 Changsha Shishuo Network Technology Co., Ltd. All rights reserved.
- *	长沙市师说网络科技有限公司 版权所有
- *	http://www.shishuo.com
- */
-
 package com.shishuo.cms.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-/**
- * 管理员实体
- * 
- * @author Administrator
- * 
- */
-
-public class Admin {
-
-	/**
-	 * 管理员Id
-	 */
+public class AdminVO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private long adminId;
-
-	/**
-	 * 管理员名称
-	 */
-	private String name;
-
-	/**
-	 * 密码
-	 */
-	private String password;
-
-	/**
-	 * 时间
-	 */
-	private Date createTime;
-
+	private String name = "";
+	private String password = "";
+	private Date createTime = new Date();
+	private List<Long> roleList = new ArrayList<Long>();
 	public long getAdminId() {
 		return adminId;
 	}
@@ -69,4 +44,11 @@ public class Admin {
 		this.createTime = createTime;
 	}
 
+	public List<Long> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Long> roleList) {
+		this.roleList = roleList;
+	}
 }

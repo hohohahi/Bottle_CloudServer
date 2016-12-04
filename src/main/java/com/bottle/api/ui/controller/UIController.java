@@ -21,6 +21,7 @@ import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.common.vo.RestResultVO;
 import com.bottle.api.ui.server.IUIService;
 import com.bottle.api.ui.vo.UIVO;
+import com.shishuo.cms.entity.AdminVO;
 import com.shishuo.cms.entity.vo.TemplateVO;
 
 @Controller
@@ -33,6 +34,30 @@ public class UIController extends AbstractBaseController implements IController 
 	@RequestMapping(value="/ping", method = RequestMethod.POST)
 	protected RestResultVO register(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		return resultVO;
+    }
+	
+	@ResponseBody
+	@RequestMapping(value="/adminlogin", method = RequestMethod.POST)
+	protected RestResultVO login(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final AdminVO adminVO){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+
+		try {
+			uiService.adminLogin(adminVO);
+			resultVO.setData(adminVO);
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+				resultVO.setExtraMessage(e.getMessage());
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}
 		
 		return resultVO;
     }

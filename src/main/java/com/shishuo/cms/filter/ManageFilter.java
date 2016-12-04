@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.shishuo.cms.constant.SystemConstant;
-import com.shishuo.cms.entity.Admin;
+import com.shishuo.cms.entity.AdminVO;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class ManageFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		Admin admin = (Admin) request.getSession().getAttribute(
+		AdminVO admin = (AdminVO) request.getSession().getAttribute(
 				SystemConstant.SESSION_ADMIN);
 		if (admin == null) {
 			String path = request.getContextPath();
