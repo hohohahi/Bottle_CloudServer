@@ -73,6 +73,8 @@ public class AdminService {
 				for (AdminRoleMapVO mapVO : mapList) {
 					roleList.add(mapVO.getRoleId());
 				}
+				
+				adminVO.setRoleList(roleList);
 			}
 		}
 		else {
