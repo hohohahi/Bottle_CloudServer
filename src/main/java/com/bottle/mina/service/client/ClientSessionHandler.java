@@ -57,7 +57,7 @@ public class ClientSessionHandler implements IoHandler {
 
 	@Override
 	public void inputClosed(IoSession session) throws Exception {
-		System.out.println("input closed.");
+
 	}  
   
 }  

@@ -1,6 +1,7 @@
 package com.bottle.mina.service;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
+import org.apache.mina.filter.firewall.BlacklistFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,16 +81,26 @@ public class MinaServer extends AbstractBaseBean implements IMinaServer {
 	}
 	
 	public void runServer(){
-		acceptor = new NioSocketAcceptor(); //AprSocketAcceptor  
-		//IoAcceptor acceptor = new AprSocketAcceptor();   
-		super.debugLog("BetrixDataSendingMinaServer start");
-        //acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
-        acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
-        acceptor.setHandler(betrixMinaServerHandler);
-        acceptor.getSessionConfig().setReadBufferSize( MinaConstants.BUFFER_SIZE );
-        acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 60*24*365);
-        
-        try {
+		try {
+			acceptor = new NioSocketAcceptor(); //AprSocketAcceptor  
+			//IoAcceptor acceptor = new AprSocketAcceptor();   
+			super.debugLog("BetrixDataSendingMinaServer start");
+			//acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
+			BlacklistFilter blacklistFilter=new BlacklistFilter();   
+			InetAddress[] address= new InetAddress[3];  
+			address[0]=InetAddress.getByName("10.0.11.69");
+			address[1]=InetAddress.getByName("10.0.11.190");
+			address[2]=InetAddress.getByName("10.0.11.209");
+			//address[3]=InetAddress.getByName("127.0.0.1");
+			blacklistFilter.setBlacklist(address);  
+			acceptor.getFilterChain().addFirst("black",blacklistFilter);
+
+			acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
+			acceptor.setHandler(betrixMinaServerHandler);
+			acceptor.getSessionConfig().setReadBufferSize( MinaConstants.BUFFER_SIZE );
+			acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 60*24*365);
+
+
 			acceptor.bind( new InetSocketAddress(MinaConstants.PORT) );
 		} catch (IOException e) {
 			String errorMessage=  "BetrixDataSendingMinaServer banding error";
