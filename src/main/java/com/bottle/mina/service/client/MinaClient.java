@@ -13,8 +13,7 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bottle.mina.constants.MinaConstants;
-import com.bottle.mina.vo.SubscriptionVO;
-import com.bottle.mina.vo.TemplateOperationVO;  
+import com.bottle.mina.vo.AdminLoginVO;  
   
 public class MinaClient {  
     public static void main(String[] args) {  
@@ -28,8 +27,10 @@ public class MinaClient {
         connectFuture.awaitUninterruptibly();            
         IoSession session = connectFuture.getSession();     
         
-        final SubscriptionVO subscriptionVO = new SubscriptionVO();
-        subscriptionVO.setIdentifier("test identifier");
+        final AdminLoginVO adminLoginVO = new AdminLoginVO();
+        adminLoginVO.setUsername("admin");
+        adminLoginVO.setPassword("admin");
+        session.write(JSONObject.toJSONString(adminLoginVO));
         //session.write(JSONObject.toJSONString(subscriptionVO));
        // session.write(JSONObject.toJSONString(new TemplateOperationVO()));
 

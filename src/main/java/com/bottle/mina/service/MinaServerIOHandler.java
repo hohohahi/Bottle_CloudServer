@@ -3,17 +3,26 @@ package com.bottle.mina.service;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bottle.api.common.constants.IWebServiceConstants;
+import com.bottle.api.common.vo.RestResultVO;
+import com.bottle.backoffice.admin.service.AdminService;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.mina.constants.MinaConstants;
+import com.bottle.mina.vo.AdminLoginVO;
 import com.bottle.mina.vo.SubscriptionVO;
+import com.shishuo.cms.entity.AdminVO;
 
 @Service
 public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
 {   
+	@Autowired
+	private AdminService adminService;
+	
 	@Override
     public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
     {
@@ -65,10 +74,17 @@ public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
 				
 				session.setAttribute(MinaConstants._sessionKey_Identifier_, subscriptionVO.getIdentifier());
 			}
-			
-			session.write("test write back from mina server.");
-			final String identifier = (String)session.getAttribute("identifier", "default");
-			System.out.println("messageReceived： dentifier:" + identifier + "--message:" + message);
+			else if (MinaConstants.MinaMessageType._MinaMessage_Type_AdminLogin.getId() == responseType) {
+				AdminLoginVO adminLoginVO = JSONObject.toJavaObject(jsonObj, AdminLoginVO.class);
+				final AdminVO adminVO = new AdminVO();
+				adminVO.setName(adminLoginVO.getUsername());
+				adminVO.setPassword(adminLoginVO.getPassword());
+				adminService.adminLogin(adminVO);
+				
+				RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+				resultVO.setData(adminVO);
+				session.write(JSON.toJSONString(resultVO));
+			}			
 		} catch (Throwable e) {
 			super.logErrorAndStack(e, e.getMessage());
 		}

@@ -30,7 +30,8 @@ public class MinaConstants {
 	public enum MinaMessageType {
 		_MinaMessage_Type_None(0),
 		_MinaMessage_Type_Subscription(1),
-		_MinaMessage_Type_TemplateOperaton(2);
+		_MinaMessage_Type_TemplateOperaton(2),
+		_MinaMessage_Type_AdminLogin(3),;
 		
 		long id = 0L;
 		MinaMessageType(long id) {
