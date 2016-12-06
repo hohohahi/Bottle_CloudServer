@@ -85,8 +85,8 @@ public class MinaServer extends AbstractBaseBean implements IMinaServer {
         //acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
         acceptor.getFilterChain().addLast( "codec", new ProtocolCodecFilter( new TextLineCodecFactory( Charset.forName( "UTF-8" ))));
         acceptor.setHandler(betrixMinaServerHandler);
-       // acceptor.getSessionConfig().setReadBufferSize( MinaConstants.BUFFER_SIZE );
-        //acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, MinaConstants.BOTH_IDLE_TIME );
+        acceptor.getSessionConfig().setReadBufferSize( MinaConstants.BUFFER_SIZE );
+        acceptor.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, 60*24*365);
         
         try {
 			acceptor.bind( new InetSocketAddress(MinaConstants.PORT) );

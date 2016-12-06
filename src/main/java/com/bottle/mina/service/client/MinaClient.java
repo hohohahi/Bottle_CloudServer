@@ -24,7 +24,7 @@ public class MinaClient {
         connector.getSessionConfig().setIdleTime( IdleStatus.BOTH_IDLE, MinaConstants.BOTH_IDLE_TIME );
         final IoHandler ioHandler = new ClientSessionHandler("is_zhoufeng");
         connector.setHandler(ioHandler);           
-        ConnectFuture connectFuture = connector.connect(new InetSocketAddress("127.0.0.1", 9123));  
+        ConnectFuture connectFuture = connector.connect(new InetSocketAddress("127.0.0.1", 8585));  
         connectFuture.awaitUninterruptibly();            
         IoSession session = connectFuture.getSession();     
         
