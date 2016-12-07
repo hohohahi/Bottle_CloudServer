@@ -184,10 +184,12 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		}
 		
 		if (true == sessionService.isBottleMounted(identifier)){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Already_Mounted, json.toString());
+			//throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Already_Mounted, json.toString());
+			sessionService.mount(identifier, phoneNumber);
 		}
-		
-		sessionService.mount(identifier, phoneNumber);
+		else {
+			sessionService.mount(identifier, phoneNumber);
+		}		
 	}
 	
 	public Long verifyAndGetLong(Object obj){
