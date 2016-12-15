@@ -224,7 +224,9 @@ insert into player (name, status, phoneNumber, password, amount, smsCode) values
 
 INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
 INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版', 1,'检测条形码特征', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
-INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版2', 1,'检测条形码特征2', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
+INSERT INTO `template` (name, status, barCode, price, isMetal, weight, posNum, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版3', 1, 'abcdefg123456', 1.0, 1, 2, 4, '检测条形码特征3', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
+INSERT INTO `template` (name, status, barCode, price, isMetal, weight, posNum, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版4', 1,'123456abcdefg', 2.0, 2, 4, 6, '检测条形码特征4', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
+
 INSERT INTO `role` (id, name) VALUES (1,'管理员');
 INSERT INTO `role` (id, name) VALUES (2,'后台操作员');
 INSERT INTO `adminRoleMap` (adminId,  roleId) VALUES (1, 1);

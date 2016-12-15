@@ -15,5 +15,6 @@ public interface IBottleDAO {
 	public BottleVO selectOneByIdentifier(final String identifier);
 	public List<TemplateVO> selectTemplateListByBottleId(@Param("bottleId") final long bottleId);
 	public void insertBottleTemplateMap(@Param("bottleId")final long bottleId, @Param("templateId")final long templateId);
+	public void removeBottleTemplateMap(@Param("bottleId")final long bottleId, @Param("templateId")final long templateId);	
 	public TemplateVO selectOneMapByBottleIdAndTemplateId(@Param("bottleId")final long bottleId, @Param("templateId")final long templateId);
 }

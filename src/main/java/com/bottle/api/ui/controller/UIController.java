@@ -121,6 +121,29 @@ public class UIController extends AbstractBaseController implements IController 
     }
 	
 	@ResponseBody
+	@RequestMapping(value="/bottletemplateremove", method = RequestMethod.POST)
+	protected RestResultVO removeBottleTemplateMap(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			bottleService.removeBottleTemplateMap(vo.getIdentifier(), vo.getTemplateId());
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+				resultVO.setExtraMessage(e.getMessage());
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}				
+		
+		return resultVO;
+    }
+	
+	@ResponseBody
 	@RequestMapping(value="/uploadtemplate", method = RequestMethod.POST)
 	protected RestResultVO uploadTemplate(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final TemplateVO template){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);

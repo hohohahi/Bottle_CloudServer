@@ -60,7 +60,8 @@ public interface IWebServiceConstants {
 		_RestService_Exception_AdminLogin_UserNotExisted(21L, "admin user is not existed."),
 		_RestService_Exception_AdminLogin_WrongPassword(22L, "admin user's password is wrong."),
 		_RestService_Exception_Template_Not_Existed(23L, "template is not existed."),
-		_RestService_Exception_BottleTemplateMap_Already_Existed(24L, "bottle-template map is already existed.");
+		_RestService_Exception_BottleTemplateMap_Already_Existed(24L, "bottle-template map is already existed."),
+		_RestService_Exception_BottleTemplateMap_Not_Existed(25L, "bottle-template map is already existed.");
 		
 		private long errorCode = 0L;
 		private String errorMessage = "";

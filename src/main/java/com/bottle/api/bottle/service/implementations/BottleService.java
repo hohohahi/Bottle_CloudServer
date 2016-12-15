@@ -115,4 +115,29 @@ public class BottleService extends AbstractBaseBean implements IBottleService {
 		
 		bottleDAO.insertBottleTemplateMap(bottleId, templateId);
 	}
+
+	@Override
+	public void removeBottleTemplateMap(String identifier, long templateId) {
+		super.validateObject(identifier);
+		final BottleVO bottle = bottleDAO.selectOneByIdentifier(identifier);
+		if (null == bottle) {
+			final String errorMessage = "bottle is not existed, identifier:" + identifier;
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Not_Existed, errorMessage);
+		}
+
+		final TemplateVO template = templateService.selectTemplateById(templateId);
+		if (null == template) {
+			final String errorMessage = "template is not existed, templateId:" + templateId;
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Not_Existed, errorMessage);
+		}
+		
+		final long bottleId = bottle.getId();
+		final TemplateVO templateInMap = bottleDAO.selectOneMapByBottleIdAndTemplateId(bottleId, templateId);
+		if (null == templateInMap) {
+			final String errorMessage = "bottle-template is not existed, templateId:" + templateId + "--bottleId:" + bottleId;
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_BottleTemplateMap_Not_Existed, errorMessage);
+		}
+		
+		bottleDAO.removeBottleTemplateMap(bottleId, templateId);
+	}
 }

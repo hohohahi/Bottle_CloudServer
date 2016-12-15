@@ -42,4 +42,8 @@
 		values
 		(#{bottleId}, #{templateId})		
 	</insert>
+	
+	<delete id="removeBottleTemplateMap">  
+        delete from bottleTemplateMap where bottleId = #{bottleId}  and templateId = #{templateId}
+    </delete>  
 </mapper>

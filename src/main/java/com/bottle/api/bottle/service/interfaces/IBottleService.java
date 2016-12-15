@@ -11,4 +11,5 @@ public interface IBottleService {
 	public void removeCacheByPhoneNumber(final long phoneNumber);
 	List<TemplateVO> selectTemplateListByBottleIdentifier(final String identifier);
 	void insertBottleTemplateMap(final String identifier, final long templateId);
+	void removeBottleTemplateMap(final String identifier, final long templateId);
 }
