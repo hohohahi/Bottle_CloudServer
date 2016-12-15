@@ -17,4 +17,29 @@
 	<select id="selectOneByIdentifier" resultType="com.bottle.api.bottle.vo.BottleVO">
 		select * from bottle where identifier = #{identifier}
 	</select>
+	
+	<select id="selectTemplateListByBottleId" resultType="com.shishuo.cms.entity.vo.TemplateVO">
+		select t.* from bottleTemplateMap bt, template t  where 
+		bt.templateId = t.id
+		and
+		bt.bottleId = #{bottleId}
+	</select>
+	
+	<select id="selectOneMapByBottleIdAndTemplateId" resultType="com.shishuo.cms.entity.vo.TemplateVO">
+		select t.* from bottleTemplateMap bt, template t  
+		where 
+		bt.templateId = t.id
+		and
+		bt.bottleId = #{bottleId}
+		and 
+		bt.templateId = #{templateId}
+	</select>		
+	
+	<insert id="insertBottleTemplateMap">
+		insert into
+		bottleTemplateMap
+		(bottleId, templateId)
+		values
+		(#{bottleId}, #{templateId})		
+	</insert>
 </mapper>

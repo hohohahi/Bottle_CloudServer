@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bottle.api.bottle.service.interfaces.IBottleService;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.controller.AbstractBaseController;
 import com.bottle.api.common.controller.IController;
@@ -29,6 +30,9 @@ import com.shishuo.cms.entity.vo.TemplateVO;
 public class UIController extends AbstractBaseController implements IController {
 	@Autowired
 	private IUIService uiService;
+	
+	@Autowired
+	private IBottleService bottleService;
 	
 	@ResponseBody
 	@RequestMapping(value="/ping", method = RequestMethod.POST)
@@ -79,6 +83,40 @@ public class UIController extends AbstractBaseController implements IController 
 		final List<TemplateVO> templateList = uiService.getTemplateList();
 		
 		resultVO.setData(JSONObject.toJSON(templateList));
+		return resultVO;
+    }
+	
+	@ResponseBody
+	@RequestMapping(value="/bottletemplatelist", method = RequestMethod.POST)
+	protected RestResultVO getExistedTemplateList(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		final List<TemplateVO> templateList = bottleService.selectTemplateListByBottleIdentifier(vo.getIdentifier());
+		
+		resultVO.setData(JSONObject.toJSON(templateList));
+		return resultVO;
+    }
+	
+	@ResponseBody
+	@RequestMapping(value="/bottletemplateinsert", method = RequestMethod.POST)
+	protected RestResultVO addBottleTemplateMap(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
+		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
+		
+		try {
+			bottleService.insertBottleTemplateMap(vo.getIdentifier(), vo.getTemplateId());
+		} catch (Exception e) {
+			if (true == (e instanceof MyAPIRuntimeException)){
+				MyAPIRuntimeException myException = (MyAPIRuntimeException)e;
+				resultVO.assignExceptionEnum(myException.getErrorDefinitionEnum());
+			}
+			else {
+				resultVO.assignExceptionEnum(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_UNKNOWN);
+				resultVO.setExtraMessage(e.getMessage());
+			}
+			
+			super.logErrorAndStack(e, e.getMessage());
+		}				
+		
 		return resultVO;
     }
 	

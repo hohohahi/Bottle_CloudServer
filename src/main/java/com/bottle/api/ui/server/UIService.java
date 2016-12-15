@@ -22,7 +22,7 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	
 	@Autowired
 	private AdminService adminService;
-	
+
 	@Override
 	public void returnMoneyToPlayer(long phoneNumber, double amount) {
 		playerService.updateAmount(phoneNumber, amount);

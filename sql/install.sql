@@ -1,3 +1,15 @@
+DROP TABLE IF EXISTS bottleTemplateMap;
+CREATE TABLE `bottleTemplateMap` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `bottleId` bigint(20) not null DEFAULT 0 COMMENT 'bottleId',
+  `templateId` bigint(20) not null DEFAULT 0 COMMENT 'templateId',  
+  PRIMARY KEY (`id`),
+  KEY `idx_bottleId` (`bottleId`),
+  KEY `idx_templateId` (`templateId`),
+  UNIQUE KEY `idx_bottleId_templateId` (`bottleId`,`templateId`)   
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='bottleTemplateMap';
+
+
 DROP TABLE IF EXISTS template;
 CREATE TABLE `template` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -212,6 +224,7 @@ insert into player (name, status, phoneNumber, password, amount, smsCode) values
 
 INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
 INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版', 1,'检测条形码特征', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
+INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版2', 1,'检测条形码特征2', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
 INSERT INTO `role` (id, name) VALUES (1,'管理员');
 INSERT INTO `role` (id, name) VALUES (2,'后台操作员');
 INSERT INTO `adminRoleMap` (adminId,  roleId) VALUES (1, 1);

@@ -6,6 +6,7 @@ public class UIVO {
 	private double amount = 0.0d;
 	private String username = "";
 	private String password = "";
+	private long templateId = 0L;
 	
 	public long getPhoneNumber() {
 		return phoneNumber;
@@ -29,5 +30,13 @@ public class UIVO {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public long getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(long templateId) {
+		this.templateId = templateId;
 	}		
 }

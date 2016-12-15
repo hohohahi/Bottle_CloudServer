@@ -26,7 +26,18 @@ public class TemplateService extends AbstractBaseBean implements ITemplateServic
 		try {
 			templateVOList = tempalteDAO.selectAll();
 			
-			for (TemplateVO templateVO : templateVOList) {
+			fullfilTemplatePosMap(templateVOList);
+		} catch (Exception e) {
+			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_DB_ERROR, e.getMessage());
+		}
+		
+		return templateVOList;
+	}
+
+	public void fullfilTemplatePosMap(final List<TemplateVO> templateList) {
+		super.validateObject(templateList);
+		try {			
+			for (TemplateVO templateVO : templateList) {
 				final long templateId = templateVO.getId();
 				final long posNum = templateVO.getPosNum();
 				
@@ -47,10 +58,8 @@ public class TemplateService extends AbstractBaseBean implements ITemplateServic
 		} catch (Exception e) {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_DB_ERROR);
 		}
-		
-		return templateVOList;
 	}
-
+	
 	public void validateTemplateWeight(final long weight) {
 		if (weight <= 0) {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Template_Invalid, "weight is not valid. weight:" + weight);
@@ -154,5 +163,10 @@ public class TemplateService extends AbstractBaseBean implements ITemplateServic
 												+ "--templatePosMapDeletedNum:" + templatePosMapDeletedNum
 												+ "--posNum:" + posNum);
 		}
+	}
+
+	@Override
+	public TemplateVO selectTemplateById(long templateId) {
+		return tempalteDAO.selectById(templateId);
 	}
 }
