@@ -2,6 +2,7 @@ package com.shishuo.cms.action.manage;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.shishuo.cms.entity.Media;
 import com.shishuo.cms.entity.vo.AdminVOExt;
 import com.shishuo.cms.entity.vo.ArticleVo;
 import com.shishuo.cms.entity.vo.JsonVo;
+import com.shishuo.cms.entity.vo.TemplateVO;
 import com.shishuo.cms.exception.ArticleNotFoundException;
 import com.shishuo.cms.exception.FolderNotFoundException;
 import com.shishuo.cms.exception.UploadException;
@@ -128,6 +130,36 @@ public class ManageBottleAction extends ManageBaseAction {
 		return "manage/article/update";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/showTemplateOfBottle.json", method = RequestMethod.POST)
+	public JsonVo<List> showTemplateOfBottle(
+			@RequestParam("identifier") String identifier
+			)
+			throws ParseException {
+		JsonVo<List> json = new JsonVo<List>();
+		try {
+			List<TemplateVO> templateList = bottleService.selectTemplateListByBottleIdentifier(identifier);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+			for(TemplateVO  vo:templateList)
+			{
+			
+				
+				String dateString = formatter.format(vo.getCreatedDate());
+				vo.setCreateTimeStr(dateString);
+			}
+			json.setT(templateList);
+			json.setResult(true);
+			return json;
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.setResult(false);
+			return json;
+		}
+	}
+
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "/update.json", method = RequestMethod.POST)
 	public JsonVo<Article> update(

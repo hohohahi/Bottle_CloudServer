@@ -16,10 +16,11 @@ public class TemplateVO {
 	private long status = 0L;
 	private String description = "";
 	private Timestamp createdDate = new Timestamp(0L);
+	
 	private long createdBy = 0L;
 	private Timestamp modifiedDate = new Timestamp(0L);
 	private long modifiedBy = 0L;
-	
+	private String createTimeStr = "";
 	public long getId() {
 		return id;
 	}
@@ -104,6 +105,13 @@ public class TemplateVO {
 	}
 	public void setPositionInfoList(List<PositionInfoVO> positionInfoList) {
 		this.positionInfoList = positionInfoList;
+	}
+	
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
 	}
 	@Override
 	public String toString() {
