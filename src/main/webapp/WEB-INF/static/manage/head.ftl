@@ -15,6 +15,15 @@
 <link href="${BASE_PATH}/static/manage/css/bootstrap-reset.css?v=${config_v}"
 	rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${BASE_PATH}/static/manage/css/gallery.css?v=${config_v}" />	
+
+
+<link rel="stylesheet" type="text/css" href="${BASE_PATH}/static/manage/js/jquery-easyui-1.5.1/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${BASE_PATH}/static/manage/js/jquery-easyui-1.5.1/themes/icon.css">
+
+<script type="text/javascript" src="${BASE_PATH}/static/manage/js/jquery-easyui-1.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="${BASE_PATH}/static/manage/js/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+
+
 <!--external css-->
 <link
 	href="${BASE_PATH}/static/manage/assets/font-awesome/css/font-awesome.css?v=${config_v}"
