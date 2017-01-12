@@ -87,11 +87,13 @@ public class MinaServer extends AbstractBaseBean implements IMinaServer {
 			super.debugLog("BetrixDataSendingMinaServer start");
 			//acceptor.getFilterChain().addLast( "logger", new LoggingFilter() );
 			BlacklistFilter blacklistFilter=new BlacklistFilter();   
-			InetAddress[] address= new InetAddress[4];  
+			InetAddress[] address= new InetAddress[5];  
 			address[0]=InetAddress.getByName("10.0.11.69");
 			address[1]=InetAddress.getByName("10.0.11.190");
 			address[2]=InetAddress.getByName("10.0.11.209");
 			address[3]=InetAddress.getByName("10.0.10.49");
+			address[4]=InetAddress.getByName("10.0.10.4");
+
 			//address[3]=InetAddress.getByName("127.0.0.1");
 			blacklistFilter.setBlacklist(address);  
 			acceptor.getFilterChain().addFirst("black",blacklistFilter);

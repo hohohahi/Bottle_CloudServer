@@ -122,10 +122,7 @@ public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
 
 	@Override
 	public void inputClosed(IoSession paramIoSession) throws Exception {
-		final String debugMessage = "session input closed. id:" + paramIoSession.getId()
-										+ "--ip address:" + paramIoSession.getRemoteAddress();
-		super.debugLog(debugMessage);
-		System.out.println(debugMessage);
+
 	}
     
 }
