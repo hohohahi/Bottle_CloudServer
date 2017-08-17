@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bottle.api.player.service.interfaces.IPlayerService;
+import com.bottle.api.ui.vo.CheckRecordVO;
+import com.bottle.api.ui.vo.UIVO;
 import com.bottle.backoffice.admin.service.AdminService;
 import com.bottle.common.AbstractBaseBean;
 import com.shishuo.cms.entity.AdminVO;
@@ -46,5 +48,10 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	@Override
 	public void adminLogin(AdminVO adminVO) {
 		adminService.adminLogin(adminVO);
+	}
+
+	@Override
+	public void recordCheckResult(long phoneNumber, List<CheckRecordVO> checkResultVOList) {
+		playerService.recordCheckResult(phoneNumber, checkResultVOList);		
 	}
 }

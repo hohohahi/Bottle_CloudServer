@@ -1,5 +1,6 @@
 package com.bottle.api.player.service.implementations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,6 +20,8 @@ import com.bottle.api.player.service.interfaces.IPlayerService;
 import com.bottle.api.player.service.interfaces.ISMSCodeSender;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
+import com.bottle.api.ui.vo.CheckRecordVO;
+import com.bottle.api.ui.vo.PlayerCheckRecordVO;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
 
@@ -146,6 +149,13 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Existed);			
 		}
 		
+		final List<PlayerCheckRecordVO> playerCheckRecordList = playerDAO.selectPlayerCheckRecordVOList_ByPhoneNumber(phoneNumber);
+		for (final PlayerCheckRecordVO subVO : playerCheckRecordList) {
+			final List<CheckRecordVO> checkRecordVOList = playerDAO.selectRecordList_ByResultId(subVO.getResultId());
+			subVO.setCheckResultVOList(checkRecordVOList);
+		}
+		
+		playerVO.setCheckRecordVOList(playerCheckRecordList);
 		return playerVO;
 	}
 	
@@ -308,5 +318,20 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		double newAmount = playerVO.getAmount() + amount;
 		playerVO.setAmount(newAmount);
 		playerDAO.updateAmountByPhoneNumber(playerVO);
+	}
+
+	@Override
+	public void recordCheckResult(final long phoneNumber, final List<CheckRecordVO> checkResultVOList) {
+		final PlayerCheckRecordVO playerCheckResultVO = new PlayerCheckRecordVO();
+		playerCheckResultVO.setCheckResultVOList(checkResultVOList);
+		playerCheckResultVO.setPhoneNumber(phoneNumber);
+		playerCheckResultVO.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+		
+		playerDAO.insertPlayerCheckResult(playerCheckResultVO);
+		final long resultId = playerDAO.selectMaxResultIdByPhoneNumber(phoneNumber);
+		for (CheckRecordVO subVO : checkResultVOList) {
+			subVO.setResultId(resultId);
+			playerDAO.insertRecordMap(subVO);
+		}
 	}
 }

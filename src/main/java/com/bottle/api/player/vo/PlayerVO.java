@@ -1,6 +1,10 @@
 package com.bottle.api.player.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bottle.api.ui.vo.PlayerCheckRecordVO;
 
 public class PlayerVO implements Serializable{
 	private static final long serialVersionUID = 468110010958412844L;
@@ -11,6 +15,7 @@ public class PlayerVO implements Serializable{
 	String password = "";
 	double amount = 0.0d;
 	String smsCode = "";
+	private List<PlayerCheckRecordVO> checkRecordVOList = new ArrayList<PlayerCheckRecordVO>();
 	
 	public long getId() {
 		return id;
@@ -54,6 +59,13 @@ public class PlayerVO implements Serializable{
 	public void setSmsCode(String smsCode) {
 		this.smsCode = smsCode;
 	}
+	public List<PlayerCheckRecordVO> getCheckRecordVOList() {
+		return checkRecordVOList;
+	}
+	public void setCheckRecordVOList(List<PlayerCheckRecordVO> checkRecordVOList) {
+		this.checkRecordVOList = checkRecordVOList;
+	}
+	
 	@Override
 	public String toString() {
 		return "PlayerVO [id=" + id + ", name=" + name + ", status=" + status

@@ -71,6 +71,7 @@ public class UIController extends AbstractBaseController implements IController 
 	protected RestResultVO returnMoney(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
+		uiService.recordCheckResult(vo.getPhoneNumber(), vo.getCheckRecordList());
 		uiService.returnMoneyToPlayer(vo.getPhoneNumber(), vo.getAmount());
 		return resultVO;
     }

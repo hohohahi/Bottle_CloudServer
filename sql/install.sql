@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS playerCheckResult;
+CREATE TABLE `playerCheckResult` (
+  `resultId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'resultId',
+  `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',  
+  `createdDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',  
+  PRIMARY KEY (`resultId`),
+  KEY `idx_phoneNumber` (`phoneNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='playerCheckResult';
+
+DROP TABLE IF EXISTS checkResultMap;
+CREATE TABLE `checkResultMap` (
+  `resultId` bigint(20) DEFAULT '0' COMMENT 'check result id',
+  `orderIndex` bigint(20) NOT NULL COMMENT 'orderIndex',
+  `templateId` bigint(20) NOT NULL COMMENT 'templateId',
+  `templateName` varchar(500) not null DEFAULT '0' COMMENT 'templateName',
+  `price` double not null DEFAULT 0,  
+    KEY `idx_resultId` (`resultId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='checkResultMap';
+
 DROP TABLE IF EXISTS bottleTemplateMap;
 CREATE TABLE `bottleTemplateMap` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',

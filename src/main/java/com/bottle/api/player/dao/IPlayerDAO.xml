@@ -9,11 +9,40 @@
 		values
 		(#{name},#{status}, #{phoneNumber}, #{password}, #{amount}, #{smsCode})		
 	</insert>
+  
+	<insert id="insertPlayerCheckResult" parameterType="com.bottle.api.ui.vo.PlayerCheckRecordVO">
+		insert into
+		playerCheckResult 
+		(phoneNumber, createdDate)
+		values
+		(#{phoneNumber},#{createdDate})		
+	</insert>		
+	
+	<select id="selectPlayerCheckRecordVOList_ByPhoneNumber" resultType="com.bottle.api.ui.vo.PlayerCheckRecordVO" parameterType="long">
+		select * from playerCheckResult
+		where
+		phoneNumber=#{phoneNumber} order by resultId
+	</select>
+	
+	<insert id="insertRecordMap" parameterType="com.bottle.api.ui.vo.CheckRecordVO">
+		insert into checkResultMap (resultId, orderIndex, templateId, templateName, price) values (#{resultId}, #{orderIndex}, #{templateId}, #{templateName}, #{price})		
+	</insert>		
+	
+	<select id="selectRecordList_ByResultId" resultType="com.bottle.api.ui.vo.CheckRecordVO" parameterType="long">
+		select * from checkResultMap
+		where
+		resultId=#{resultId}
+	</select>			
+	
+	<select id="selectMaxResultIdByPhoneNumber" parameterType="long" resultType="long">
+		select max(resultId) from playerCheckResult where
+		phoneNumber=#{phoneNumber} 
+	</select>
 	
 	<select id="selectOne_ByPhoneNumber" resultType="com.bottle.api.player.vo.PlayerVO">
 		select * from player where
 		phoneNumber=#{phoneNumber} 
-	</select>
+	</select>		
 	
 	<select id="selectAll" resultType="com.bottle.api.player.vo.PlayerVO">
 		select * from player
