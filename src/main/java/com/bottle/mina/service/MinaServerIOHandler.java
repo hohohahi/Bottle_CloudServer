@@ -36,7 +36,6 @@ public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
     									+ "--ip address:" +session.getRemoteAddress();
     	System.out.println(warnMessage);
     	super.warnLog(warnMessage);    	
-    	session.write(warnMessage);
     }
     
     @Override

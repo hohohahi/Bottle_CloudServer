@@ -24,6 +24,7 @@ import com.bottle.api.ui.vo.CheckRecordVO;
 import com.bottle.api.ui.vo.PlayerCheckRecordVO;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
+import com.bottle.mina.service.IServerDataSender;
 
 @Service
 public class PlayerService extends AbstractBaseBean implements IPlayerService {
@@ -41,10 +42,13 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	
 	@Autowired
 	private IBottleService bottleService;
-	
-	
+		
 	@Autowired
 	private IAmountWithdrawService amountWithdrawService;
+	
+	@Autowired
+	private IServerDataSender serverDataSender;
+	
 	@Override
 	public void verifySMSCode(long phoneNumber, String smsCode) {
 		if (false == isMobile(phoneNumber)){
@@ -183,23 +187,28 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 		final Object identifierObj = json.get("identifier");
 		String identifier = verifyAndGetString(identifierObj);
 		
+		/*
 		final PlayerVO playerVO_Cache = sessionService.getPlayerVOByPhoneNumber(phoneNumber);
 		if (false == sessionService.isPlayerLogined(playerVO_Cache, phoneNumber)){
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Login, json.toString());
 		}
-		
+		*/
 		final boolean isBottledExisted = bottleService.isBottleExisted_ByIdentifier(identifier);
 		if (false == isBottledExisted){
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Not_Existed, json.toString());
 		}
 		
+		/*
 		if (true == sessionService.isBottleMounted(identifier)){
 			//throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Bottle_Already_Mounted, json.toString());
 			sessionService.mount(identifier, phoneNumber);
 		}
 		else {
 			sessionService.mount(identifier, phoneNumber);
-		}		
+		}
+		*/		
+		
+		serverDataSender.loginMachine(identifier, phoneNumber);
 	}
 	
 	public Long verifyAndGetLong(Object obj){

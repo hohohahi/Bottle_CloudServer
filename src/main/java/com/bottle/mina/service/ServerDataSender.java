@@ -11,7 +11,10 @@ import org.apache.mina.core.session.IoSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bottle.common.AbstractBaseBean;
+import com.bottle.mina.constants.MinaConstants;
+import com.bottle.mina.vo.ServerMessageVO;
 
 @Service
 public class ServerDataSender extends AbstractBaseBean implements IServerDataSender{
@@ -107,4 +110,39 @@ public class ServerDataSender extends AbstractBaseBean implements IServerDataSen
 	public int getToBeSentQueuesize(){
 		return queue.size();
 	}
+
+	@Override
+	public void loginMachine(String identifier, long phoneNumber) {
+		final List<IoSession> sessionList = betrixServer.getActiveSessionList();
+		
+		for (final IoSession session : sessionList){
+			final Object valueObj = session.getAttribute(MinaConstants._sessionKey_Identifier_);
+			if (false == (valueObj instanceof String)) {
+				throw new RuntimeException("valueObject is not instance of String. valueObj:" + valueObj);
+			}
+			
+			final String dstClientIdentifier = (String)valueObj;
+			
+			if (true == identifier.equals(dstClientIdentifier)) {
+				ServerMessageVO message = new ServerMessageVO();
+				message.setMessageType( MinaConstants.MinaMessageType._MinaMessage_Type_FromServer.getId());
+				message.setSubMessageType( MinaConstants.MinaMessageType._MinaMessage_Type_FromServer_LoginMachine.getId());
+				message.setPhoneNumber(phoneNumber);
+				message.setIdentifier(identifier);				
+				
+				pushMessageToClients(JSONObject.toJSON(message).toString(), session);
+			}						
+		}		
+	}
+	
+	public static void main(String [] args) {
+		ServerMessageVO message = new ServerMessageVO();
+		message.setMessageType( MinaConstants.MinaMessageType._MinaMessage_Type_FromServer.getId());
+		message.setSubMessageType( MinaConstants.MinaMessageType._MinaMessage_Type_FromServer_LoginMachine.getId());
+		message.setPhoneNumber(18975811415L);
+		message.setIdentifier("testabc123");
+		
+		System.out.println(JSONObject.toJSON(message).toString());
+	}
+	
 }

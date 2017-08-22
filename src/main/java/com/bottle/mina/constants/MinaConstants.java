@@ -31,7 +31,11 @@ public class MinaConstants {
 		_MinaMessage_Type_None(0),
 		_MinaMessage_Type_Subscription(1),
 		_MinaMessage_Type_TemplateOperaton(2),
-		_MinaMessage_Type_AdminLogin(3),;
+		_MinaMessage_Type_AdminLogin(3),
+		
+		_MinaMessage_Type_FromServer(4),
+		_MinaMessage_Type_FromServer_LoginMachine(5),
+		;
 		
 		long id = 0L;
 		MinaMessageType(long id) {
