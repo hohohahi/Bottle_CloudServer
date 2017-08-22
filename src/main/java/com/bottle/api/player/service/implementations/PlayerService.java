@@ -207,7 +207,7 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 			sessionService.mount(identifier, phoneNumber);
 		}
 		*/		
-		
+		super.debugLog("PlayerService::mount: identifier:" + identifier + "--phoneNumber:" + phoneNumber + "--json:" + json);
 		serverDataSender.loginMachine(identifier, phoneNumber);
 	}
 	
