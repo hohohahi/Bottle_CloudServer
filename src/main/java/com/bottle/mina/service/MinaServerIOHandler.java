@@ -72,6 +72,8 @@ public class MinaServerIOHandler extends AbstractBaseBean implements IoHandler
 				}
 				
 				session.setAttribute(MinaConstants._sessionKey_Identifier_, subscriptionVO.getIdentifier());
+				super.debugLog("Server receives the subscription message. key:" + subscriptionVO.getIdentifier() + "--session Id:" + session.getId());
+				System.out.println("Server receives the subscription message. key:" + subscriptionVO.getIdentifier() + "--session Id:" + session.getId());
 			}
 			else if (MinaConstants.MinaMessageType._MinaMessage_Type_AdminLogin.getId() == responseType) {
 				AdminLoginVO adminLoginVO = JSONObject.toJavaObject(jsonObj, AdminLoginVO.class);

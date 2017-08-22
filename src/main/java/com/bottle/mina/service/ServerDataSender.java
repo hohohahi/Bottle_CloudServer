@@ -114,11 +114,15 @@ public class ServerDataSender extends AbstractBaseBean implements IServerDataSen
 	@Override
 	public void loginMachine(String identifier, long phoneNumber) {
 		final List<IoSession> sessionList = betrixServer.getActiveSessionList();
-		
+		super.debugLog("loginMachine: session list size:" + sessionList.size());
 		for (final IoSession session : sessionList){
 			final Object valueObj = session.getAttribute(MinaConstants._sessionKey_Identifier_);
 			if (false == (valueObj instanceof String)) {
-				throw new RuntimeException("valueObject is not instance of String. valueObj:" + valueObj);
+				//throw new RuntimeException("valueObject is not instance of String. valueObj:" + valueObj + "--session Id:" + session.getId());
+				final String errorMessage = "valueObject is not instance of String. valueObj:" + valueObj + "--session Id:" + session.getId();
+				System.out.println(errorMessage);
+				super.errorLog(errorMessage);
+				continue;
 			}
 			
 			final String dstClientIdentifier = (String)valueObj;
