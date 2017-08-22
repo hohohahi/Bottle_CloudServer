@@ -18,7 +18,7 @@
         </layout>  
     </appender>  
     
-    <category name="com.bottle.api">
+    <category name="com.bottle">
         <priority value="debug"/>
         <appender-ref ref="APILog"/>
     </category>    
