@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-  
+
 <mapper namespace="com.bottle.api.player.dao.IPlayerDAO">
 	<insert id="insert" parameterType="com.bottle.api.player.vo.PlayerVO">
 		insert into
 		player
-		(name, status, phoneNumber, password, amount, smsCode)
+		(
+			name, status, role, phoneNumber, password, amount, score, smsCode, 
+			totalBottleNum, totalCheckNum, totalAmount,
+			totalReturnMoneyBottleNum, totalReturnMoneyCheckNum, totalReturnMoneyAmount,
+			totalDonateBottleNum, totalDonateCheckNum, totalDonateAmount,			
+			totalSavingOilSum, totalSavingCarbonDioxideSum
+		)
 		values
-		(#{name},#{status}, #{phoneNumber}, #{password}, #{amount}, #{smsCode})		
+		(
+			#{name},#{status}, #{role}, #{phoneNumber}, #{password}, #{amount}, #{score}, #{smsCode},
+			#{totalBottleNum},#{totalCheckNum}, #{totalAmount},
+			#{totalReturnMoneyBottleNum},#{totalReturnMoneyCheckNum}, #{totalReturnMoneyAmount},
+			#{totalDonateBottleNum},#{totalDonateCheckNum}, #{totalDonateAmount},			
+			#{totalSavingOilSum}, #{totalSavingCarbonDioxideSum}			
+		)		
 	</insert>
   
 	<insert id="insertPlayerCheckResult" parameterType="com.bottle.api.ui.vo.PlayerCheckRecordVO">
 		insert into
 		playerCheckResult 
-		(phoneNumber, createdDate)
+		(
+			phoneNumber, cashMode, machineIdentifier, createdDate
+		)
 		values
-		(#{phoneNumber},#{createdDate})		
+		(
+			#{phoneNumber}, #{cashMode}, #{machineIdentifier}, #{createdDate}
+		)		
 	</insert>		
 	
-	<select id="selectPlayerCheckRecordVOList_ByPhoneNumber" resultType="com.bottle.api.ui.vo.PlayerCheckRecordVO" parameterType="long">
+	<select id="selectPlayerCheckRecordVOList_ByPhoneNumber_OrderByResultID" resultType="com.bottle.api.ui.vo.PlayerCheckRecordVO" parameterType="long">
 		select * from playerCheckResult
 		where
 		phoneNumber=#{phoneNumber} order by resultId
@@ -53,5 +69,28 @@
 	    where
 		phoneNumber=#{phoneNumber} 
 	</update>
-	
+				
+	<update id="updatePlayer" parameterType="com.bottle.api.player.vo.PlayerVO">
+	    update player 
+	    	set 
+	    	amount = #{amount}, 
+	    	score = #{score},
+	    	
+	    	totalBottleNum = #{totalBottleNum},
+	    	totalCheckNum = #{totalCheckNum},
+	    	totalAmount = #{totalAmount},
+	    	
+	    	totalReturnMoneyBottleNum = #{totalReturnMoneyBottleNum},
+	    	totalReturnMoneyCheckNum = #{totalReturnMoneyCheckNum},
+	    	totalReturnMoneyAmount = #{totalReturnMoneyAmount},
+	    	
+	    	totalDonateBottleNum = #{totalDonateBottleNum},
+	    	totalDonateCheckNum = #{totalDonateCheckNum},
+	    	totalDonateAmount = #{totalDonateAmount},
+	    	
+	    	totalSavingOilSum = #{totalSavingOilSum},
+	    	totalSavingCarbonDioxideSum = #{totalSavingCarbonDioxideSum}
+	    where
+		phoneNumber=#{phoneNumber} 
+	</update>
 </mapper>

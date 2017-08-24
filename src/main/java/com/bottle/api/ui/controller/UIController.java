@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bottle.api.bottle.constants.IBottleConstants;
 import com.bottle.api.bottle.service.interfaces.IBottleService;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.controller.AbstractBaseController;
 import com.bottle.api.common.controller.IController;
 import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.common.vo.RestResultVO;
+import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.api.ui.server.IUIService;
 import com.bottle.api.ui.vo.UIVO;
 import com.shishuo.cms.entity.AdminVO;
@@ -71,8 +73,8 @@ public class UIController extends AbstractBaseController implements IController 
 	protected RestResultVO returnMoney(final HttpServletResponse response, final HttpServletRequest request, @RequestBody final UIVO vo){
 		RestResultVO resultVO = new RestResultVO(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_OK);
 		
-		uiService.recordCheckResult(vo.getPhoneNumber(), vo.getCheckRecordList());
-		uiService.returnMoneyToPlayer(vo.getPhoneNumber(), vo.getAmount());
+		uiService.recordCheckResult(vo);
+		uiService.returnMoneyToPlayer(vo);
 		return resultVO;
     }
 	

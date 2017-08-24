@@ -14,9 +14,10 @@ public interface IPlayerDAO {
 	public void insert(final PlayerVO vo);
 	public PlayerVO selectOne_ByPhoneNumber(final long phoneNumber);
 	public void updateAmountByPhoneNumber(final PlayerVO vo);
+	public void updatePlayer(final PlayerVO vo);
 	public List<PlayerVO> selectAll();
 	public void insertPlayerCheckResult(final PlayerCheckRecordVO vo);
-	public List<PlayerCheckRecordVO> selectPlayerCheckRecordVOList_ByPhoneNumber(@Param("phoneNumber") final long phoneNumber);
+	public List<PlayerCheckRecordVO> selectPlayerCheckRecordVOList_ByPhoneNumber_OrderByResultID(@Param("phoneNumber") final long phoneNumber);
 	public long selectMaxResultIdByPhoneNumber(@Param("phoneNumber") final long phoneNumber);
 	public void insertRecordMap(final CheckRecordVO vo);
 	public List<CheckRecordVO> selectRecordList_ByResultId(@Param("resultId") final long resultId);

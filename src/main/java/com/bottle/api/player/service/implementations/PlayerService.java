@@ -2,7 +2,9 @@ package com.bottle.api.player.service.implementations;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +13,22 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.bottle.api.amountWithdraw.WithdrawResponseVO;
 import com.bottle.api.amountWithdraw.implement.IAmountWithdrawService;
+import com.bottle.api.bottle.constants.IBottleConstants;
+import com.bottle.api.bottle.dao.IBottleDAO;
 import com.bottle.api.bottle.service.interfaces.IBottleService;
+import com.bottle.api.bottle.vo.BottleVO;
 import com.bottle.api.common.constants.IWebServiceConstants;
 import com.bottle.api.common.exception.MyAPIRuntimeException;
 import com.bottle.api.player.dao.IPhoneAndCodeMapDAO;
 import com.bottle.api.player.dao.IPlayerDAO;
 import com.bottle.api.player.service.interfaces.IPlayerService;
 import com.bottle.api.player.service.interfaces.ISMSCodeSender;
+import com.bottle.api.player.vo.LastCheckRecordStatisticVO;
 import com.bottle.api.player.vo.PhoneAndCodeMapVO;
 import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.api.ui.vo.CheckRecordVO;
 import com.bottle.api.ui.vo.PlayerCheckRecordVO;
+import com.bottle.api.ui.vo.UIVO;
 import com.bottle.common.AbstractBaseBean;
 import com.bottle.common.redisCache.userSession.ISessionCacheService;
 import com.bottle.mina.service.IServerDataSender;
@@ -33,6 +40,9 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	
 	@Autowired
 	private IPlayerDAO playerDAO;
+	
+	@Autowired
+	private IBottleDAO bottleDAO;
 	
 	@Autowired
 	private ISMSCodeSender smsCodeSender;
@@ -153,14 +163,59 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Player_Not_Existed);			
 		}
 		
-		final List<PlayerCheckRecordVO> playerCheckRecordList = playerDAO.selectPlayerCheckRecordVOList_ByPhoneNumber(phoneNumber);
+		final List<PlayerCheckRecordVO> playerCheckRecordList = playerDAO.selectPlayerCheckRecordVOList_ByPhoneNumber_OrderByResultID(phoneNumber);
 		for (final PlayerCheckRecordVO subVO : playerCheckRecordList) {
 			final List<CheckRecordVO> checkRecordVOList = playerDAO.selectRecordList_ByResultId(subVO.getResultId());
 			subVO.setCheckResultVOList(checkRecordVOList);
 		}
 		
 		playerVO.setCheckRecordVOList(playerCheckRecordList);
+		playerVO.setLastCheckRecord(getLastStatisticRecordVO_FromLastRecord(playerCheckRecordList));		
+		
 		return playerVO;
+	}
+	
+	public LastCheckRecordStatisticVO getLastStatisticRecordVO_FromLastRecord(final List<PlayerCheckRecordVO> playerCheckRecordList) {
+		super.validateObject(playerCheckRecordList);
+		final LastCheckRecordStatisticVO lastCheckRecordStatisticVO = new LastCheckRecordStatisticVO();
+		if (playerCheckRecordList.size() > 0) {
+			final PlayerCheckRecordVO lastRecord = playerCheckRecordList.get(playerCheckRecordList.size()-1);
+			
+			lastCheckRecordStatisticVO.setCreatedDate(lastRecord.getCreatedDate());
+
+			final long bottleSum = lastRecord.getCheckResultVOList().size();			
+			lastCheckRecordStatisticVO.setSum(bottleSum);
+
+			final Map<String, Long> bottleNameAndSumMap = new HashMap<String, Long>();
+			double moneySum = 0.0d;
+			for (CheckRecordVO subVO : lastRecord.getCheckResultVOList()) {
+				moneySum += subVO.getPrice();
+
+				Long sumUnderTemplateName = bottleNameAndSumMap.get(subVO.getTemplateName());
+				if (null == sumUnderTemplateName) {
+					sumUnderTemplateName = new Long(1L);
+				}
+				else {
+					sumUnderTemplateName++;
+				}
+
+				bottleNameAndSumMap.put(subVO.getTemplateName(), sumUnderTemplateName);				
+			}
+
+			lastCheckRecordStatisticVO.setResultMap(bottleNameAndSumMap);
+			final BottleVO bottleVO = bottleDAO.selectOneByIdentifier(lastRecord.getMachineIdentifier());
+			lastCheckRecordStatisticVO.setLocation(bottleVO.getLocation());
+			if (IBottleConstants.CashModeEnum._CacheMode_ReturnMoney_.getId() == lastRecord.getCashMode()) {
+				lastCheckRecordStatisticVO.setDonateBottleSum(0L);
+				lastCheckRecordStatisticVO.setReturnMoneySum(moneySum);
+			}
+			else if (IBottleConstants.CashModeEnum._CacheMode_Donate_.getId() == lastRecord.getCashMode()) {				
+				lastCheckRecordStatisticVO.setDonateBottleSum(bottleSum);
+				lastCheckRecordStatisticVO.setReturnMoneySum(0.0d);				
+			}			
+		}	
+		
+		return lastCheckRecordStatisticVO;
 	}
 	
 	@Override
@@ -320,20 +375,44 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	}
 
 	@Override
-	public void updateAmount(long phoneNumber, double amount) {
+	public void updatePlayer(final PlayerVO srcPlayerVO) {
+		final long phoneNumber = srcPlayerVO.getPhoneNumber();
 		final PlayerVO playerVO = getPlayerInfo_ByPhoneNumber(phoneNumber);
 		super.validateObject(playerVO);
 		
-		double newAmount = playerVO.getAmount() + amount;
-		playerVO.setAmount(newAmount);
-		playerDAO.updateAmountByPhoneNumber(playerVO);
+		playerVO.setAmount(playerVO.getAmount() + srcPlayerVO.getAmount());  //accumulate
+		playerVO.setScore(playerVO.getScore() + srcPlayerVO.getScore());
+		
+		playerVO.setTotalAmount(playerVO.getTotalAmount() + srcPlayerVO.getTotalAmount());
+		playerVO.setTotalCheckNum(playerVO.getTotalCheckNum() + srcPlayerVO.getTotalCheckNum());
+		playerVO.setTotalBottleNum(playerVO.getTotalBottleNum() + srcPlayerVO.getTotalBottleNum());
+		
+		playerVO.setTotalReturnMoneyAmount(playerVO.getTotalReturnMoneyAmount() + srcPlayerVO.getTotalReturnMoneyAmount());
+		playerVO.setTotalReturnMoneyCheckNum(playerVO.getTotalReturnMoneyCheckNum() + srcPlayerVO.getTotalReturnMoneyCheckNum());
+		playerVO.setTotalReturnMoneyBottleNum(playerVO.getTotalReturnMoneyBottleNum() + srcPlayerVO.getTotalReturnMoneyBottleNum());
+		
+		playerVO.setTotalDonateAmount(playerVO.getTotalDonateAmount() + srcPlayerVO.getTotalDonateAmount());
+		playerVO.setTotalDonateCheckNum(playerVO.getTotalDonateCheckNum() + srcPlayerVO.getTotalDonateCheckNum());
+		playerVO.setTotalDonateBottleNum(playerVO.getTotalDonateBottleNum() + srcPlayerVO.getTotalDonateBottleNum());
+		
+		playerVO.setTotalSavingOilSum(playerVO.getTotalSavingOilSum() + srcPlayerVO.getTotalSavingOilSum());
+		playerVO.setTotalSavingCarbonDioxideSum(playerVO.getTotalSavingCarbonDioxideSum() + srcPlayerVO.getTotalSavingCarbonDioxideSum());
+		
+		playerDAO.updatePlayer(playerVO);
 	}
 
 	@Override
-	public void recordCheckResult(final long phoneNumber, final List<CheckRecordVO> checkResultVOList) {
+	public void recordCheckResult(final UIVO uiVO) {
+		final long phoneNumber = uiVO.getPhoneNumber();
+		final List<CheckRecordVO> checkResultVOList = uiVO.getCheckRecordList();
+		final long cashMode = uiVO.getCashMode();
+		final String machineIdentifier = uiVO.getMachineIdentifier();
+		
 		final PlayerCheckRecordVO playerCheckResultVO = new PlayerCheckRecordVO();
 		playerCheckResultVO.setCheckResultVOList(checkResultVOList);
 		playerCheckResultVO.setPhoneNumber(phoneNumber);
+		playerCheckResultVO.setCashMode(cashMode);
+		playerCheckResultVO.setMachineIdentifier(machineIdentifier);
 		playerCheckResultVO.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 		
 		playerDAO.insertPlayerCheckResult(playerCheckResultVO);

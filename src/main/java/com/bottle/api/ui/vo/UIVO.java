@@ -10,6 +10,8 @@ public class UIVO {
 	private String username = "";
 	private String password = "";
 	private long templateId = 0L;
+	private long cashMode = 0L;   //0, return money; 1, donate
+	private String machineIdentifier = "";
 	private List<CheckRecordVO> checkRecordList = new ArrayList<CheckRecordVO>();
 	
 	public long getPhoneNumber() {
@@ -66,5 +68,28 @@ public class UIVO {
 
 	public void setCheckRecordList(List<CheckRecordVO> checkRecordList) {
 		this.checkRecordList = checkRecordList;
+	}
+
+	public long getCashMode() {
+		return cashMode;
+	}
+
+	public void setCashMode(long cashMode) {
+		this.cashMode = cashMode;
+	}
+	
+	public String getMachineIdentifier() {
+		return machineIdentifier;
+	}
+
+	public void setMachineIdentifier(String machineIdentifier) {
+		this.machineIdentifier = machineIdentifier;
+	}
+
+	@Override
+	public String toString() {
+		return "UIVO [identifier=" + identifier + ", phoneNumber=" + phoneNumber + ", amount=" + amount + ", username="
+				+ username + ", password=" + password + ", templateId=" + templateId + ", cashMode=" + cashMode
+				+ ", machineIdentifier=" + machineIdentifier + ", checkRecordList=" + checkRecordList + "]";
 	}
 }

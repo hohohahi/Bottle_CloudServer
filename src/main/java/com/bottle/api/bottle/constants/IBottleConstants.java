@@ -1,6 +1,8 @@
 package com.bottle.api.bottle.constants;
 
 public interface IBottleConstants {
+	long _CarbonDioxideWeight_PerBottle_ = 25;  //in gram
+	long _OilWeight_PerBottle_ = 80;  //in gram
 	enum BottleMountStatusEnum{
 		_Not_Mounted_(0),
 		_Mounted(1);
@@ -17,7 +19,21 @@ public interface IBottleConstants {
 
 		public void setStatus(long status) {
 			this.status = status;
-		}
+		}		
+	}
+	
+	enum CashModeEnum{
+		_CacheMode_ReturnMoney_(0),
+		_CacheMode_Donate_(1);
 		
+		long id = 0;
+		
+		CashModeEnum(long id) {
+			this.id = id;
+		}
+
+		public long getId() {
+			return id;
+		}
 	}
 }

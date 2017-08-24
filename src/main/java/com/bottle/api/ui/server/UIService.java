@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bottle.api.bottle.constants.IBottleConstants;
 import com.bottle.api.player.service.interfaces.IPlayerService;
-import com.bottle.api.ui.vo.CheckRecordVO;
+import com.bottle.api.player.vo.PlayerVO;
 import com.bottle.api.ui.vo.UIVO;
 import com.bottle.backoffice.admin.service.AdminService;
 import com.bottle.common.AbstractBaseBean;
@@ -26,8 +27,45 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	private AdminService adminService;
 
 	@Override
-	public void returnMoneyToPlayer(long phoneNumber, double amount) {
-		playerService.updateAmount(phoneNumber, amount);
+	public void returnMoneyToPlayer(final UIVO uiVO) {
+		long bottleNum = 0L;
+		if (null != uiVO.getCheckRecordList()) {
+			bottleNum = uiVO.getCheckRecordList().size();
+		}
+		else {
+			bottleNum = 0L;
+		}
+		
+		final PlayerVO playerVO = new PlayerVO();
+		playerVO.setPhoneNumber(uiVO.getPhoneNumber());
+		
+		playerVO.setAmount(uiVO.getAmount());
+		playerVO.setScore(bottleNum);
+		
+		//the accumulate value, below
+		playerVO.setTotalAmount(uiVO.getAmount());
+		playerVO.setTotalBottleNum(bottleNum);
+		playerVO.setTotalCheckNum(1L);
+		
+		if (IBottleConstants.CashModeEnum._CacheMode_ReturnMoney_.getId() == uiVO.getCashMode()) {
+			playerVO.setTotalReturnMoneyAmount(uiVO.getAmount());
+			playerVO.setTotalReturnMoneyCheckNum(1L);
+			playerVO.setTotalReturnMoneyBottleNum(bottleNum);
+		}
+		else if (IBottleConstants.CashModeEnum._CacheMode_Donate_.getId() == uiVO.getCashMode()) {
+			playerVO.setTotalDonateAmount(uiVO.getAmount());
+			playerVO.setTotalDonateCheckNum(1L);
+			playerVO.setTotalDonateBottleNum(bottleNum);
+		}
+		else {
+			throw new RuntimeException("not support cash mode");
+		}
+		
+		//oil 0.08kg, carbon Dioxide 0.025kg
+		playerVO.setTotalSavingOilSum(IBottleConstants._OilWeight_PerBottle_*bottleNum);
+		playerVO.setTotalSavingCarbonDioxideSum(IBottleConstants._CarbonDioxideWeight_PerBottle_*bottleNum);
+		
+		playerService.updatePlayer(playerVO);
 	}
 
 	@Override
@@ -51,7 +89,7 @@ public class UIService extends AbstractBaseBean implements IUIService {
 	}
 
 	@Override
-	public void recordCheckResult(long phoneNumber, List<CheckRecordVO> checkResultVOList) {
-		playerService.recordCheckResult(phoneNumber, checkResultVOList);		
+	public void recordCheckResult(final UIVO uiVO) {
+		playerService.recordCheckResult(uiVO);		
 	}
 }
