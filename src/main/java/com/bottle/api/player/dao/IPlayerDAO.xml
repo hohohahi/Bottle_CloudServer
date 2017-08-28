@@ -69,7 +69,13 @@
 	    where
 		phoneNumber=#{phoneNumber} 
 	</update>
-				
+	
+	<update id="updateScoreByPhoneNumber" parameterType="com.bottle.api.player.vo.PlayerVO">
+	    update player set score = #{score} 
+	    where
+		phoneNumber=#{phoneNumber} 
+	</update>			
+	
 	<update id="updatePlayer" parameterType="com.bottle.api.player.vo.PlayerVO">
 	    update player 
 	    	set 

@@ -357,19 +357,35 @@ public class PlayerService extends AbstractBaseBean implements IPlayerService {
 	}
 
 	@Override
-	public String telWithdraw(long phoneNumber, double amount) {
-		
-		
-		WithdrawResponseVO responseVo=amountWithdrawService.doWithdraw(amount, IAmountWithdrawService.WithdrawByPhoneNumberCharge, phoneNumber);
-		if(responseVo.isOk()==false){
-			throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getReason());
-		}else{
-			final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
-			PlayerVO vo=new PlayerVO();
-			double resultAmount=playerVO.getAmount()-amount;
-			vo.setAmount(resultAmount);
-			vo.setPhoneNumber(playerVO.getPhoneNumber());
-			playerDAO.updateAmountByPhoneNumber(vo);
+	public String telWithdraw(long phoneNumber, double amount,long score) {
+		WithdrawResponseVO responseVo;
+		final PlayerVO playerVO = playerDAO.selectOne_ByPhoneNumber(phoneNumber);
+		if(score!=0){
+			if(playerVO.getScore()<score){
+				throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, "用户积分不够,当前积分:"+playerVO.getScore()+",所需积分："+score);
+			}
+			double accordingAmountByScorescore  = score/10;
+			responseVo=amountWithdrawService.doWithdraw(accordingAmountByScorescore, IAmountWithdrawService.WithdrawByPhoneNumberCharge, phoneNumber);
+			if(responseVo.isOk()==false){
+				throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getReason());
+			}else{
+				PlayerVO updatePlayer=new PlayerVO();
+				long resultScore=playerVO.getScore()-score;
+				updatePlayer.setScore(resultScore);;
+				updatePlayer.setPhoneNumber(playerVO.getPhoneNumber());
+				playerDAO.updateScoreByPhoneNumber(updatePlayer);
+			}
+		}else {
+			responseVo=amountWithdrawService.doWithdraw(amount, IAmountWithdrawService.WithdrawByPhoneNumberCharge, phoneNumber);
+			if(responseVo.isOk()==false){
+				throw new MyAPIRuntimeException(IWebServiceConstants.RestServiceExceptionEnum._RestService_Exception_Amount_Withdraw_Error, responseVo.getReason());
+			}else{				
+				PlayerVO vo=new PlayerVO();
+				double resultAmount=playerVO.getAmount()-amount;
+				vo.setAmount(resultAmount);
+				vo.setPhoneNumber(playerVO.getPhoneNumber());
+				playerDAO.updateAmountByPhoneNumber(vo);
+			}
 		}
 		return responseVo.getReason();
 	}
