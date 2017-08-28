@@ -111,8 +111,7 @@ public class PlayerController extends AbstractBaseController implements IControl
 		
 		try {
 			
-			
-			final String retString = service.telWithdraw(vo.getPhoneNumber(),vo.getAmount());
+			final String retString = service.telWithdraw(vo.getPhoneNumber(),vo.getAmount(),vo.getScore());
 			resultVO.setData(retString);
 		} catch (Exception e) {
 			if (true == (e instanceof MyAPIRuntimeException)){
