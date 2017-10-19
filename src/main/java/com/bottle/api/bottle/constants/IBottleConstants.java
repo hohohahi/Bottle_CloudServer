@@ -3,6 +3,10 @@ package com.bottle.api.bottle.constants;
 public interface IBottleConstants {
 	long _CarbonDioxideWeight_PerBottle_ = 25;  //in gram
 	long _OilWeight_PerBottle_ = 80;  //in gram
+	
+	String _donatePhoneNumber_ = "18888888888";
+	String _invalidPhoneNumber_ = "19999999999";
+	
 	enum BottleMountStatusEnum{
 		_Not_Mounted_(0),
 		_Mounted(1);

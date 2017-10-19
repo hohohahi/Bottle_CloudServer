@@ -1,8 +1,10 @@
 DROP TABLE IF EXISTS playerCheckResult;
 CREATE TABLE `playerCheckResult` (
   `resultId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'resultId',
-  `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',  
-  `createdDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',  
+  `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',
+  `cashMode` bigint(20) DEFAULT '0' COMMENT 'cash mode',
+  `machineIdentifier` varchar(200) DEFAULT 'machine identifier',
+  `createdDate` TIMESTAMP DEFAULT '2016-09-26 00:00:00',  
   PRIMARY KEY (`resultId`),
   KEY `idx_phoneNumber` (`phoneNumber`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='playerCheckResult';
@@ -40,9 +42,9 @@ CREATE TABLE `template` (
   `posNum` bigint(20) not null DEFAULT 0,
   `status` bigint(20) not null DEFAULT 0,
   `description` varchar(500) DEFAULT 'template description',
-  `createdDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',
+  `createdDate` TIMESTAMP DEFAULT '2016-09-26 00:00:00',
   `createdBy` bigint(20) DEFAULT '0',
-  `modifiedDate` TIMESTAMP(14) DEFAULT '2016-09-26 00:00:00',
+  `modifiedDate` TIMESTAMP DEFAULT '2016-09-26 00:00:00',
   `modifiedBy` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `barCode_idx` (`barCode`)
@@ -76,19 +78,32 @@ CREATE TABLE `phoneAndCodeMap` (
   `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',
   `code` varchar(500) DEFAULT '0',  
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
-  KEY `idx_phoneNumber_And_Code` (`phoneNumber`,`code`) USING BTREE
+  UNIQUE KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='PhoneAndCodeMap';
-
+	
 DROP TABLE IF EXISTS player;
 CREATE TABLE `player` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(100) DEFAULT '0',
   `status` bigint(20) DEFAULT '0',
+  `role` bigint(20) DEFAULT '0',
   `phoneNumber` bigint(20) DEFAULT '0' COMMENT 'phone number',
   `password` varchar(500) DEFAULT '0',
   `amount` double unsigned DEFAULT 0.0,
+  `score` bigint(20) DEFAULT '0',
   `smsCode` varchar(500) DEFAULT '0',
+  `createdDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `totalBottleNum` bigint(20) DEFAULT '0',
+  `totalCheckNum` bigint(20) DEFAULT '0',
+  `totalAmount` double unsigned DEFAULT 0.0,
+  `totalReturnMoneyBottleNum` bigint(20) DEFAULT '0',
+  `totalReturnMoneyCheckNum` bigint(20) DEFAULT '0',
+  `totalReturnMoneyAmount` double unsigned DEFAULT 0.0,
+  `totalDonateBottleNum` bigint(20) DEFAULT '0',
+  `totalDonateCheckNum` bigint(20) DEFAULT '0',
+  `totalDonateAmount` double unsigned DEFAULT 0.0,  
+  `totalSavingOilSum` bigint(20) DEFAULT '0',
+  `totalSavingCarbonDioxideSum` bigint(20) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_phoneNumber` (`phoneNumber`) USING BTREE,
   UNIQUE KEY `idx_name` (`name`) USING BTREE
@@ -238,8 +253,13 @@ INSERT INTO `config` VALUES ('shishuo_seo_title','师说CMS','网站名称','201
 INSERT INTO `config` VALUES ('shishuo_static','false','是否启用全站静态化','2012-08-08 00:00:00');
 INSERT INTO `config` VALUES ('shishuo_template','blog','模板','2012-08-08 00:00:00');
 
-insert into player (name, status, phoneNumber, password, amount, smsCode) values ('will', 0, 13787210140, '123', 0, '061009');
-insert into player (name, status, phoneNumber, password, amount, smsCode) values ('Rainman', 0, 18975811415, '123', 99.8, '921934');
+  
+insert into player (name, status, role, phoneNumber, password, amount, score, smsCode, totalBottleNum, totalCheckNum, totalAmount, totalReturnMoneyBottleNum, totalReturnMoneyCheckNum, totalReturnMoneyAmount, totalDonateBottleNum, totalDonateCheckNum, totalDonateAmount, totalSavingOilSum, totalSavingCarbonDioxideSum) 
+values ('will', 0, 1, 13787210140, '123', 0, 1, '061009', 0, 0, 0.0, 0, 0, 0.0, 0, 0, 0.0, 0, 0);
+insert into player (name, status, role, phoneNumber, password, amount, score, smsCode, totalBottleNum, totalCheckNum, totalAmount, totalReturnMoneyBottleNum, totalReturnMoneyCheckNum, totalReturnMoneyAmount, totalDonateBottleNum, totalDonateCheckNum, totalDonateAmount, totalSavingOilSum, totalSavingCarbonDioxideSum) 
+values ('Rainman', 0, 1, 18975811415, '123', 99.8, 2, '921934', 0, 0, 0.0, 0, 0, 0.0, 0, 0, 0.0, 0, 0);
+insert into player (name, status, role, phoneNumber, password, amount, score, smsCode, totalBottleNum, totalCheckNum, totalAmount, totalReturnMoneyBottleNum, totalReturnMoneyCheckNum, totalReturnMoneyAmount, totalDonateBottleNum, totalDonateCheckNum, totalDonateAmount, totalSavingOilSum, totalSavingCarbonDioxideSum)
+values ('Anonymous', 0, 2, 18888888888, '888', 0, 3, '888888', 0, 0, 0.0, 0, 0, 0.0, 0, 0, 0.0, 0, 0);
 
 INSERT INTO `bottle` (name, status, location, identifier) VALUES ('DEMO回收机', 1,'湖南省长沙市岳麓区', '40ec2351-af21-4d1c-9a92-85629f43a0bc');
 INSERT INTO `template` (name, status, description, createdDate, createdBy, modifiedDate, modifiedBy) VALUES ('条形码模版', 1,'检测条形码特征', '2016-09-26 00:00:01', 1, '2016-09-26 00:00:01', 1);
