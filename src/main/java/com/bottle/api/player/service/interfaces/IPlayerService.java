@@ -16,7 +16,7 @@ public interface IPlayerService {
 	void mount(final JSONObject json);
 	void unmount(final JSONObject json);
 	PlayerVO getPlayerInfo_ByPhoneNumber(final long phoneNumber);
-	String telWithdraw(final long phoneNumber,double amount);
+	String telWithdraw(final long phoneNumber,double amount,long score);
 	void updatePlayer(final PlayerVO playerVO);
 	void recordCheckResult(final UIVO uiVO);
 }
